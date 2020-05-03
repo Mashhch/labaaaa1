@@ -95,7 +95,7 @@ char* f19(char* s1, char s[20])
     return s1;
 }
 
-// массив указателей на функции
+// РјР°СЃСЃРёРІ СѓРєР°Р·Р°С‚РµР»РµР№ РЅР° С„СѓРЅРєС†РёРё
 void** mass_fint() {
 
     void** funcs = (void**)malloc(9 * sizeof(void*));
@@ -137,19 +137,19 @@ typedef struct {
     int dlins1;
     char* s2;
     int dlins2;
-    char* s_out; // склеенная строка
+    char* s_out; // СЃРєР»РµРµРЅРЅР°СЏ СЃС‚СЂРѕРєР°
     int dlins_out;
 } String;
 
 typedef struct {
-    void** A; // массив
-    int N; // колво элементов в массиве
+    void** A; // РјР°СЃСЃРёРІ
+    int N; // РєРѕР»РІРѕ СЌР»РµРјРµРЅС‚РѕРІ РІ РјР°СЃСЃРёРІРµ
     char tip; //  i - integer, c -char, s - stroka
-    int dlinstr; // длина строк в массиве
-    int arg; //аргумент для int
-    char* sukaz_arg[9]; //аргумент для char
-    char s_arg[9][20]; //аргумент для char
-    int i; //счетчик для where
+    int dlinstr; // РґР»РёРЅР° СЃС‚СЂРѕРє РІ РјР°СЃСЃРёРІРµ
+    int arg; //Р°СЂРіСѓРјРµРЅС‚ РґР»СЏ int
+    char* sukaz_arg[9]; //Р°СЂРіСѓРјРµРЅС‚ РґР»СЏ char
+    char s_arg[9][20]; //Р°СЂРіСѓРјРµРЅС‚ РґР»СЏ char
+    int i; //СЃС‡РµС‚С‡РёРє РґР»СЏ where
 }Arr;
 
 Arr AddElem(Arr Massiv, void* elem)
@@ -196,13 +196,13 @@ char* concat(String string)
 void ctest1(Arr Massiv)
 {
     //struct Arr
-    printf("\nСтруктура: Massiv\nКоличество элементов в массиве: %d", Massiv.N);
+    printf("\nРЎС‚СЂСѓРєС‚СѓСЂР°: Massiv\nРљРѕР»РёС‡РµСЃС‚РІРѕ СЌР»РµРјРµРЅС‚РѕРІ РІ РјР°СЃСЃРёРІРµ: %d", Massiv.N);
     if (Massiv.tip == 'c')
-        printf("\nМассив хранит указатели на функции, возвращающие указатель на char");
+        printf("\nРњР°СЃСЃРёРІ С…СЂР°РЅРёС‚ СѓРєР°Р·Р°С‚РµР»Рё РЅР° С„СѓРЅРєС†РёРё, РІРѕР·РІСЂР°С‰Р°СЋС‰РёРµ СѓРєР°Р·Р°С‚РµР»СЊ РЅР° char");
     if (Massiv.tip == 'i')
-        printf("\nМассив хранит указатели на функции, возвращающие указатель на int");
+        printf("\nРњР°СЃСЃРёРІ С…СЂР°РЅРёС‚ СѓРєР°Р·Р°С‚РµР»Рё РЅР° С„СѓРЅРєС†РёРё, РІРѕР·РІСЂР°С‰Р°СЋС‰РёРµ СѓРєР°Р·Р°С‚РµР»СЊ РЅР° int");
     if (Massiv.tip == 's')
-        printf("\nМассив хранит указатели на char");
+        printf("\nРњР°СЃСЃРёРІ С…СЂР°РЅРёС‚ СѓРєР°Р·Р°С‚РµР»Рё РЅР° char");
 }
 
 void ctest2(String string)
@@ -235,7 +235,7 @@ Arr F1(Arr Massiv)
     if (Massiv.tip == 'i' ) //int func
     {
         for (int i = 0; i < Massiv.N; i++)
-            a[i] = ((int(*)(int))Massiv.A[i])(Massiv.arg) * (-1); // массив чисел * -1    
+            a[i] = ((int(*)(int))Massiv.A[i])(Massiv.arg) * (-1); // РјР°СЃСЃРёРІ С‡РёСЃРµР» * -1    
         Massiv.A = malloc(Massiv.N * sizeof(int*));
         for (int i = 0; i < Massiv.N; i++)
             (int*)Massiv.A[i] = a[i];
@@ -287,13 +287,13 @@ int boolf(Arr Massiv)
     if (Massiv.tip == 's') // stroka
     {
             if ('A' <= *((char*)Massiv.A[Massiv.i]) && *((char*)Massiv.A[Massiv.i]) <= 'Z')
-                flag = 1;// строка начинается на заглавную
+                flag = 1;// СЃС‚СЂРѕРєР° РЅР°С‡РёРЅР°РµС‚СЃСЏ РЅР° Р·Р°РіР»Р°РІРЅСѓСЋ
         }
 
     if (Massiv.tip == 'c') // char func
     {
         if ('A' <= *(((char* (*)(char*, char k[20])) Massiv.A[Massiv.i]) (Massiv.sukaz_arg[Massiv.i], Massiv.s_arg[Massiv.i])) && *(((char* (*)(char*, char k[20])) Massiv.A[Massiv.i]) (Massiv.sukaz_arg[Massiv.i], Massiv.s_arg[Massiv.i])) <= 'Z')
-                flag = 1; // строка начинается на заглавную
+                flag = 1; // СЃС‚СЂРѕРєР° РЅР°С‡РёРЅР°РµС‚СЃСЏ РЅР° Р·Р°РіР»Р°РІРЅСѓСЋ
     }
     if (flag == 1) return 1; else return 0;
 }
@@ -341,9 +341,9 @@ main()
     int (*ukazf2)(Arr Massiv);
     Massiv.N = 0;
     Massiv.tip = '0'; //  i - integer, c -char, s - stroka
-    Massiv.dlinstr = 0; // длина строк в массиве
+    Massiv.dlinstr = 0; // РґР»РёРЅР° СЃС‚СЂРѕРє РІ РјР°СЃСЃРёРІРµ
     Massiv.arg=0;
-    Massiv.i = 0; //счетчик
+    Massiv.i = 0; //СЃС‡РµС‚С‡РёРє
     for (int i = 0; i < 9; i++)
     {
         for (int j = 0; j < 2; j++)
@@ -365,26 +365,26 @@ main()
     while (deistvie_int >= 0 && deistvie_int <= 9)
     {
         deistvie_int = 10;
-        printf("\n\n0 - Автоматический ввод функций int;\n1 - Автоматический ввод функций char;\n2 - Автоматический ввод строк;\n3 - ручной ввод функций int;\n4 - ручной ввод функций char; \n5 - ручной ввод строк; 6 - concat; \n7 - ctest\nВыход - любая другая клавиша;\n");
+        printf("\n\n0 - РђРІС‚РѕРјР°С‚РёС‡РµСЃРєРёР№ РІРІРѕРґ С„СѓРЅРєС†РёР№ int;\n1 - РђРІС‚РѕРјР°С‚РёС‡РµСЃРєРёР№ РІРІРѕРґ С„СѓРЅРєС†РёР№ char;\n2 - РђРІС‚РѕРјР°С‚РёС‡РµСЃРєРёР№ РІРІРѕРґ СЃС‚СЂРѕРє;\n3 - СЂСѓС‡РЅРѕР№ РІРІРѕРґ С„СѓРЅРєС†РёР№ int;\n4 - СЂСѓС‡РЅРѕР№ РІРІРѕРґ С„СѓРЅРєС†РёР№ char; \n5 - СЂСѓС‡РЅРѕР№ РІРІРѕРґ СЃС‚СЂРѕРє; 6 - concat; \n7 - ctest\nР’С‹С…РѕРґ - Р»СЋР±Р°СЏ РґСЂСѓРіР°СЏ РєР»Р°РІРёС€Р°;\n");
         rewind(stdin);
         deistvie = getchar();
 
         if (deistvie >= '0' && deistvie <= '7')
             deistvie_int = (deistvie - '0');
 
-        if (deistvie_int == 0) //Автоматический ввод функций int
+        if (deistvie_int == 0) //РђРІС‚РѕРјР°С‚РёС‡РµСЃРєРёР№ РІРІРѕРґ С„СѓРЅРєС†РёР№ int
         {
             flag = 1;
             Massiv.arg = rand() % 15;
             Massiv.tip = 'i';
             Massiv.N = rand() % 9 + 1;
-            printf("Колличество элементов в массиве: %d", Massiv.N);
-            Massiv.A = (void**)malloc(Massiv.N * sizeof(void*)); // динамический массив указателей на функции 
-                   //указатели на функции
+            printf("РљРѕР»Р»РёС‡РµСЃС‚РІРѕ СЌР»РµРјРµРЅС‚РѕРІ РІ РјР°СЃСЃРёРІРµ: %d", Massiv.N);
+            Massiv.A = (void**)malloc(Massiv.N * sizeof(void*)); // РґРёРЅР°РјРёС‡РµСЃРєРёР№ РјР°СЃСЃРёРІ СѓРєР°Р·Р°С‚РµР»РµР№ РЅР° С„СѓРЅРєС†РёРё 
+                   //СѓРєР°Р·Р°С‚РµР»Рё РЅР° С„СѓРЅРєС†РёРё
             for (int i = 0; i < Massiv.N; i++)
                 Massiv.A[i] = mass_fint()[i];
-            printf("Значение, подаваемое в функции: %d", Massiv.arg);
-            printf("\nЗначения функций в массиве:");
+            printf("Р—РЅР°С‡РµРЅРёРµ, РїРѕРґР°РІР°РµРјРѕРµ РІ С„СѓРЅРєС†РёРё: %d", Massiv.arg);
+            printf("\nР—РЅР°С‡РµРЅРёСЏ С„СѓРЅРєС†РёР№ РІ РјР°СЃСЃРёРІРµ:");
             for (int i = 0; i < Massiv.N; i++)
             {
                 printf("\nf(%d) = ", i);
@@ -393,14 +393,14 @@ main()
             char fff = '1';
             while (fff >= '1' && fff <= '5')
             {
-                printf("\nФункции: 1 - map;\n 2 -where;\n 3 - добавить элемент,\n 4 - вывести элемент под номером i,\n 5 - вывести на экран все элементы,\nЛюбая другая клавиша - выход в главное меню; \n");
+                printf("\nР¤СѓРЅРєС†РёРё: 1 - map;\n 2 -where;\n 3 - РґРѕР±Р°РІРёС‚СЊ СЌР»РµРјРµРЅС‚,\n 4 - РІС‹РІРµСЃС‚Рё СЌР»РµРјРµРЅС‚ РїРѕРґ РЅРѕРјРµСЂРѕРј i,\n 5 - РІС‹РІРµСЃС‚Рё РЅР° СЌРєСЂР°РЅ РІСЃРµ СЌР»РµРјРµРЅС‚С‹,\nР›СЋР±Р°СЏ РґСЂСѓРіР°СЏ РєР»Р°РІРёС€Р° - РІС‹С…РѕРґ РІ РіР»Р°РІРЅРѕРµ РјРµРЅСЋ; \n");
                 rewind(stdin);
                 scanf("%c", &fff);
                 rewind(stdin);
                 if (fff == '1')
                 {
                     NewMassiv = map(Massiv, *ukazf1);
-                    printf("\nMAP: массив из значений функций, умноженных на (-1):\n");
+                    printf("\nMAP: РјР°СЃСЃРёРІ РёР· Р·РЅР°С‡РµРЅРёР№ С„СѓРЅРєС†РёР№, СѓРјРЅРѕР¶РµРЅРЅС‹С… РЅР° (-1):\n");
                     for (int i = 0; i < NewMassiv.N; i++)
                     {
                         printf("\nf(%d) = ", i);
@@ -410,7 +410,7 @@ main()
                 if (fff == '2')
                 {
                     NewMassiv = where(Massiv, *ukazf2);
-                    printf("\nWHERE: массив из значений функций, кратных 2:\n");
+                    printf("\nWHERE: РјР°СЃСЃРёРІ РёР· Р·РЅР°С‡РµРЅРёР№ С„СѓРЅРєС†РёР№, РєСЂР°С‚РЅС‹С… 2:\n");
                     for (int i = 0; i < NewMassiv.N; i++)
                     {
                         printf("\nf(%d) = ", i);
@@ -419,11 +419,11 @@ main()
                 }
                 if (fff == '3')
                 {
-                    printf("\nВведите номер функции, которую вы хотите добавить(1-10): ");
+                    printf("\nР’РІРµРґРёС‚Рµ РЅРѕРјРµСЂ С„СѓРЅРєС†РёРё, РєРѕС‚РѕСЂСѓСЋ РІС‹ С…РѕС‚РёС‚Рµ РґРѕР±Р°РІРёС‚СЊ(1-10): ");
                     char numb;
                     scanf("%c", &numb);
                     if (numb < '1' && numb> '9')
-                        printf("\nТакой функции нет, повторите попытку ввода");
+                        printf("\nРўР°РєРѕР№ С„СѓРЅРєС†РёРё РЅРµС‚, РїРѕРІС‚РѕСЂРёС‚Рµ РїРѕРїС‹С‚РєСѓ РІРІРѕРґР°");
                     else
                     {
                         int numb_int = (numb - '0');
@@ -432,11 +432,11 @@ main()
                 }
                 if (fff == '4')
                 {
-                    printf("\nВведите номер элемента(0-%d): ", Massiv.N);
+                    printf("\nР’РІРµРґРёС‚Рµ РЅРѕРјРµСЂ СЌР»РµРјРµРЅС‚Р°(0-%d): ", Massiv.N);
                     int num = 1;
                     scanf("%d", &num);
                     if (num < '0' && num >= Massiv.N)
-                        printf("\nТакого элемента не существует, повторите попытку ввода");
+                        printf("\nРўР°РєРѕРіРѕ СЌР»РµРјРµРЅС‚Р° РЅРµ СЃСѓС‰РµСЃС‚РІСѓРµС‚, РїРѕРІС‚РѕСЂРёС‚Рµ РїРѕРїС‹С‚РєСѓ РІРІРѕРґР°");
                     else
                     {
                         printf("\nf(%d) = ", num);
@@ -445,7 +445,7 @@ main()
                 }
                 if (fff == '5')
                 {
-                    printf("\nЗначения функций в массиве:");
+                    printf("\nР—РЅР°С‡РµРЅРёСЏ С„СѓРЅРєС†РёР№ РІ РјР°СЃСЃРёРІРµ:");
                     for (int i = 0; i < Massiv.N; i++)
                     {
                         printf("\nf(%d) = ", i);
@@ -456,34 +456,34 @@ main()
         }
 
 
-        if (deistvie_int == 1)//Автоматический ввод функций char
+        if (deistvie_int == 1)//РђРІС‚РѕРјР°С‚РёС‡РµСЃРєРёР№ РІРІРѕРґ С„СѓРЅРєС†РёР№ char
         {
             flag = 1;
             Massiv.tip= 'c';
             Massiv.N = rand() % 9 + 1;
-            printf("Колличество элементов в массиве: %d", Massiv.N);
-            Massiv.A = (void**)malloc(Massiv.N * sizeof(void*)); // динамический массив указателей на функции 
-                   //указатели на функции
+            printf("РљРѕР»Р»РёС‡РµСЃС‚РІРѕ СЌР»РµРјРµРЅС‚РѕРІ РІ РјР°СЃСЃРёРІРµ: %d", Massiv.N);
+            Massiv.A = (void**)malloc(Massiv.N * sizeof(void*)); // РґРёРЅР°РјРёС‡РµСЃРєРёР№ РјР°СЃСЃРёРІ СѓРєР°Р·Р°С‚РµР»РµР№ РЅР° С„СѓРЅРєС†РёРё 
+                   //СѓРєР°Р·Р°С‚РµР»Рё РЅР° С„СѓРЅРєС†РёРё
             for (int i = 0; i < Massiv.N; i++)
                 Massiv.A[i] = mass_fchar()[i];
-            printf("\nЗначения функций в массиве: ");
+            printf("\nР—РЅР°С‡РµРЅРёСЏ С„СѓРЅРєС†РёР№ РІ РјР°СЃСЃРёРІРµ: ");
             for (int i = 0; i < Massiv.N; i++)
             {
-                printf("\n f%d строка: ", i);
+                printf("\n f%d СЃС‚СЂРѕРєР°: ", i);
                 printf("%s", (((char* (*)(char*, char k[20])) Massiv.A[i])) (Massiv.sukaz_arg[i], Massiv.s_arg[i]));
             }
 
             char fff = '1';
             while (fff >= '1' && fff <= '5')
             {
-                printf("\nФункции: 1 - map;\n 2 -where;\n 3 - добавить элемент,\n 4 - вывести элемент под номером i,\n 5 - вывести на экран все элементы,\nЛюбая другая клавиша - выход в главное меню; \n");
+                printf("\nР¤СѓРЅРєС†РёРё: 1 - map;\n 2 -where;\n 3 - РґРѕР±Р°РІРёС‚СЊ СЌР»РµРјРµРЅС‚,\n 4 - РІС‹РІРµСЃС‚Рё СЌР»РµРјРµРЅС‚ РїРѕРґ РЅРѕРјРµСЂРѕРј i,\n 5 - РІС‹РІРµСЃС‚Рё РЅР° СЌРєСЂР°РЅ РІСЃРµ СЌР»РµРјРµРЅС‚С‹,\nР›СЋР±Р°СЏ РґСЂСѓРіР°СЏ РєР»Р°РІРёС€Р° - РІС‹С…РѕРґ РІ РіР»Р°РІРЅРѕРµ РјРµРЅСЋ; \n");
                 rewind(stdin);
                 scanf("%c", &fff);
                 rewind(stdin);
                 if (fff == '1')
                 {
                     NewMassiv = map(Massiv, *ukazf1);
-                    printf("\nMAP: массив функций, где функция, начинающаяся на строчную букву, меняется со следующей функцией местами : \n");
+                    printf("\nMAP: РјР°СЃСЃРёРІ С„СѓРЅРєС†РёР№, РіРґРµ С„СѓРЅРєС†РёСЏ, РЅР°С‡РёРЅР°СЋС‰Р°СЏСЃСЏ РЅР° СЃС‚СЂРѕС‡РЅСѓСЋ Р±СѓРєРІСѓ, РјРµРЅСЏРµС‚СЃСЏ СЃРѕ СЃР»РµРґСѓСЋС‰РµР№ С„СѓРЅРєС†РёРµР№ РјРµСЃС‚Р°РјРё : \n");
                     for (int i = 0; i < NewMassiv.N; i++)
                     {
                         printf("\nf(%d) = ", i);
@@ -493,7 +493,7 @@ main()
                 if (fff == '2')
                 {
                     NewMassiv = where(Massiv, *ukazf2);
-                    printf("\nWhere: массив функций, возвращающих строки, начинающиеся на заглавные буквы:\n");
+                    printf("\nWhere: РјР°СЃСЃРёРІ С„СѓРЅРєС†РёР№, РІРѕР·РІСЂР°С‰Р°СЋС‰РёС… СЃС‚СЂРѕРєРё, РЅР°С‡РёРЅР°СЋС‰РёРµСЃСЏ РЅР° Р·Р°РіР»Р°РІРЅС‹Рµ Р±СѓРєРІС‹:\n");
                     for (int i = 0; i < NewMassiv.N; i++)
                     {
                         printf("\nf(%d) = ", i);
@@ -502,12 +502,12 @@ main()
                 }
                 if (fff == '3')
                 {
-                        printf("\nВведите номер функции, которую вы хотите добавить(1-9): ");
+                        printf("\nР’РІРµРґРёС‚Рµ РЅРѕРјРµСЂ С„СѓРЅРєС†РёРё, РєРѕС‚РѕСЂСѓСЋ РІС‹ С…РѕС‚РёС‚Рµ РґРѕР±Р°РІРёС‚СЊ(1-9): ");
                         char numb;
                         rewind(stdin);
                         scanf("%c", &numb);
                         if (numb < '1' && numb> '9')
-                            printf("\nТакой функции нет, повторите попытку ввода");
+                            printf("\nРўР°РєРѕР№ С„СѓРЅРєС†РёРё РЅРµС‚, РїРѕРІС‚РѕСЂРёС‚Рµ РїРѕРїС‹С‚РєСѓ РІРІРѕРґР°");
                         else
                         {
                             int numb_int = (numb - '0');
@@ -516,38 +516,38 @@ main()
                 }
                 if (fff == '4')
                 {
-                        printf("\nВведите номер элемента(0-%d): ", Massiv.N);
+                        printf("\nР’РІРµРґРёС‚Рµ РЅРѕРјРµСЂ СЌР»РµРјРµРЅС‚Р°(0-%d): ", Massiv.N);
                         int num = 1;
                         scanf("%d", &num);
                         if (num < '0' && num > Massiv.N)
-                            printf("\nТакого элемента не существует, повторите попытку ввода");
+                            printf("\nРўР°РєРѕРіРѕ СЌР»РµРјРµРЅС‚Р° РЅРµ СЃСѓС‰РµСЃС‚РІСѓРµС‚, РїРѕРІС‚РѕСЂРёС‚Рµ РїРѕРїС‹С‚РєСѓ РІРІРѕРґР°");
                         else
                         {
-                            printf("\n f%d строка: ", num);
+                            printf("\n f%d СЃС‚СЂРѕРєР°: ", num);
                             printf("%s", (((char* (*)(char*, char k[20])) Massiv.A[num-1])) (Massiv.sukaz_arg[num-1], Massiv.s_arg[num-1]));
                         }
                 }
                     if (fff == '5')
                     {
-                        printf("\nЗначения функций в массиве: ");
+                        printf("\nР—РЅР°С‡РµРЅРёСЏ С„СѓРЅРєС†РёР№ РІ РјР°СЃСЃРёРІРµ: ");
                         for (int i = 0; i < Massiv.N; i++)
                         {
-                            printf("\n f%d строка: ", i);
+                            printf("\n f%d СЃС‚СЂРѕРєР°: ", i);
                             printf("%s", (((char* (*)(char*, char k[20])) Massiv.A[i])) (Massiv.sukaz_arg[i], Massiv.s_arg[i]));
                         }
                     }
             }
         }
 
-        if (deistvie_int == 2)//Автоматический ввод строк
+        if (deistvie_int == 2)//РђРІС‚РѕРјР°С‚РёС‡РµСЃРєРёР№ РІРІРѕРґ СЃС‚СЂРѕРє
         {
             flag = 1;
             Massiv.tip = 's';
             Massiv.dlinstr = rand() % 33 + 1;
             Massiv.N = rand() % 33 + 1;
-            printf("\nКолличество элементов в массиве: %d", Massiv.N);
-            printf("\nДлина строк: %d", Massiv.dlinstr);
-            Massiv.A = (void**)malloc(Massiv.N * sizeof(void*)); // динамический массив указателей на строки
+            printf("\nРљРѕР»Р»РёС‡РµСЃС‚РІРѕ СЌР»РµРјРµРЅС‚РѕРІ РІ РјР°СЃСЃРёРІРµ: %d", Massiv.N);
+            printf("\nР”Р»РёРЅР° СЃС‚СЂРѕРє: %d", Massiv.dlinstr);
+            Massiv.A = (void**)malloc(Massiv.N * sizeof(void*)); // РґРёРЅР°РјРёС‡РµСЃРєРёР№ РјР°СЃСЃРёРІ СѓРєР°Р·Р°С‚РµР»РµР№ РЅР° СЃС‚СЂРѕРєРё
             char* a = (char*)malloc((Massiv.N) * Massiv.dlinstr * sizeof(char));
             for (int i = 0; i < Massiv.N; i++)
             {
@@ -559,24 +559,24 @@ main()
                 }
                 Massiv.A[i] = a + i * Massiv.dlinstr;
             }
-            printf("\n Cтроки в динамическом массиве:");
+            printf("\n CС‚СЂРѕРєРё РІ РґРёРЅР°РјРёС‡РµСЃРєРѕРј РјР°СЃСЃРёРІРµ:");
             for (int i = 0; i < Massiv.N; i++)
             {
-                printf("\n %d строка:", i);
+                printf("\n %d СЃС‚СЂРѕРєР°:", i);
                 for (int j = 0; j < Massiv.dlinstr; j++)
                     printf("%c", *((char*)Massiv.A[i] + j));
             }
             char fff = '1';
             while (fff >= '1' && fff <= '5')
             {
-                printf("\nФункции: 1 - map;\n 2 -where;\n 3 - добавить элемент,\n 4 - вывести элемент под номером i,\n 5 - вывести на экран все элементы,\nЛюбая другая клавиша - выход в главное меню; \n");
+                printf("\nР¤СѓРЅРєС†РёРё: 1 - map;\n 2 -where;\n 3 - РґРѕР±Р°РІРёС‚СЊ СЌР»РµРјРµРЅС‚,\n 4 - РІС‹РІРµСЃС‚Рё СЌР»РµРјРµРЅС‚ РїРѕРґ РЅРѕРјРµСЂРѕРј i,\n 5 - РІС‹РІРµСЃС‚Рё РЅР° СЌРєСЂР°РЅ РІСЃРµ СЌР»РµРјРµРЅС‚С‹,\nР›СЋР±Р°СЏ РґСЂСѓРіР°СЏ РєР»Р°РІРёС€Р° - РІС‹С…РѕРґ РІ РіР»Р°РІРЅРѕРµ РјРµРЅСЋ; \n");
                 rewind(stdin);
                 scanf("%c", &fff);
                 rewind(stdin);
                 if (fff == '1')
                 {
                     NewMassiv = map(Massiv, *ukazf1);
-                    printf("\nMAP: Переводим первые буквы в каждой строке в заглавные: \n");
+                    printf("\nMAP: РџРµСЂРµРІРѕРґРёРј РїРµСЂРІС‹Рµ Р±СѓРєРІС‹ РІ РєР°Р¶РґРѕР№ СЃС‚СЂРѕРєРµ РІ Р·Р°РіР»Р°РІРЅС‹Рµ: \n");
                     for (int i = 0; i < Massiv.N; i++)
                     {
                         printf("\ns%d - ", i);
@@ -586,10 +586,10 @@ main()
                 if (fff == '2')
                 {
                     NewMassiv = where(Massiv, *ukazf2);
-                    printf("\nWhere: Строки, начинающиеся на буквы:\n");
+                    printf("\nWhere: РЎС‚СЂРѕРєРё, РЅР°С‡РёРЅР°СЋС‰РёРµСЃСЏ РЅР° Р±СѓРєРІС‹:\n");
                     for (int i = 0; i < NewMassiv.N; i++)
                     {
-                        printf("\n %d строка:", i);
+                        printf("\n %d СЃС‚СЂРѕРєР°:", i);
                         for (int j = 0; j < NewMassiv.dlinstr; j++)
                             printf("%c", *((char*)NewMassiv.A[i] + j));
                     }
@@ -597,7 +597,7 @@ main()
                 if (fff == '3')
                 {
                     rewind(stdin);
-                    printf("\nВведите строку, которую вы хотите добавить(длины %d): ", Massiv.dlinstr);
+                    printf("\nР’РІРµРґРёС‚Рµ СЃС‚СЂРѕРєСѓ, РєРѕС‚РѕСЂСѓСЋ РІС‹ С…РѕС‚РёС‚Рµ РґРѕР±Р°РІРёС‚СЊ(РґР»РёРЅС‹ %d): ", Massiv.dlinstr);
                     void* a = (void*)malloc(Massiv.dlinstr * sizeof(char));
                     for (int j = 0; j < Massiv.dlinstr; j++)
                         scanf("%c", (char*)a + j);
@@ -606,11 +606,11 @@ main()
                 }
                 if (fff == '4')
                 {
-                    printf("\nВведите номер элемента(0-%d): ", Massiv.N);
+                    printf("\nР’РІРµРґРёС‚Рµ РЅРѕРјРµСЂ СЌР»РµРјРµРЅС‚Р°(0-%d): ", Massiv.N);
                     int num = 1;
                     scanf("%d", &num);
                     if (num < '0' && num > Massiv.N)
-                         printf("\nТакого элемента не существует, повторите попытку ввода");
+                         printf("\nРўР°РєРѕРіРѕ СЌР»РµРјРµРЅС‚Р° РЅРµ СЃСѓС‰РµСЃС‚РІСѓРµС‚, РїРѕРІС‚РѕСЂРёС‚Рµ РїРѕРїС‹С‚РєСѓ РІРІРѕРґР°");
                     else
                     {
                      printf("\nf(%d) = ", num);
@@ -620,10 +620,10 @@ main()
                 }
                 if (fff == '5')
                 {
-                    printf("\n Cтроки в динамическом массиве:");
+                    printf("\n CС‚СЂРѕРєРё РІ РґРёРЅР°РјРёС‡РµСЃРєРѕРј РјР°СЃСЃРёРІРµ:");
                     for (int i = 0; i < Massiv.N; i++)
                     {
-                        printf("\n %d строка:", i);
+                        printf("\n %d СЃС‚СЂРѕРєР°:", i);
                         for (int j = 0; j < Massiv.dlinstr; j++)
                             printf("%c", *((char*)Massiv.A[i] + j));
                     }
@@ -632,19 +632,19 @@ main()
         free(a);
         }
 
-        if (deistvie_int == 3)//ручной ввод функиций int
+        if (deistvie_int == 3)//СЂСѓС‡РЅРѕР№ РІРІРѕРґ С„СѓРЅРєРёС†РёР№ int
         {
             flag = 1;
-            printf("\nВведите число, выступающее в качестве аргумента функций: ");
+            printf("\nР’РІРµРґРёС‚Рµ С‡РёСЃР»Рѕ, РІС‹СЃС‚СѓРїР°СЋС‰РµРµ РІ РєР°С‡РµСЃС‚РІРµ Р°СЂРіСѓРјРµРЅС‚Р° С„СѓРЅРєС†РёР№: ");
             scanf("%d", &Massiv.arg);
             Massiv.tip = 'i';
-            printf("\nВведите количество элементов в массиве(<10): ");
+            printf("\nР’РІРµРґРёС‚Рµ РєРѕР»РёС‡РµСЃС‚РІРѕ СЌР»РµРјРµРЅС‚РѕРІ РІ РјР°СЃСЃРёРІРµ(<10): ");
             scanf("%d", &Massiv.N);
-            Massiv.A = (void**)malloc(Massiv.N * sizeof(void*)); // динамический массив указателей на функции 
-                   //указатели на функции
+            Massiv.A = (void**)malloc(Massiv.N * sizeof(void*)); // РґРёРЅР°РјРёС‡РµСЃРєРёР№ РјР°СЃСЃРёРІ СѓРєР°Р·Р°С‚РµР»РµР№ РЅР° С„СѓРЅРєС†РёРё 
+                   //СѓРєР°Р·Р°С‚РµР»Рё РЅР° С„СѓРЅРєС†РёРё
             for (int i = 0; i < Massiv.N; i++)
                 Massiv.A[i] = mass_fint()[i];
-            printf("\nЗначения функций в массиве: ");
+            printf("\nР—РЅР°С‡РµРЅРёСЏ С„СѓРЅРєС†РёР№ РІ РјР°СЃСЃРёРІРµ: ");
             for (int i = 0; i < Massiv.N; i++)
             {
                 printf("\nf(%d) = ", i);
@@ -653,14 +653,14 @@ main()
             char fff = '1';
             while (fff >= '1' && fff <= '5')
             {
-                printf("\nФункции: 1 - map;\n 2 -where;\n 3 - добавить элемент,\n 4 - вывести элемент под номером i,\n 5 - вывести на экран все элементы,\nЛюбая другая клавиша - выход в главное меню; \n");
+                printf("\nР¤СѓРЅРєС†РёРё: 1 - map;\n 2 -where;\n 3 - РґРѕР±Р°РІРёС‚СЊ СЌР»РµРјРµРЅС‚,\n 4 - РІС‹РІРµСЃС‚Рё СЌР»РµРјРµРЅС‚ РїРѕРґ РЅРѕРјРµСЂРѕРј i,\n 5 - РІС‹РІРµСЃС‚Рё РЅР° СЌРєСЂР°РЅ РІСЃРµ СЌР»РµРјРµРЅС‚С‹,\nР›СЋР±Р°СЏ РґСЂСѓРіР°СЏ РєР»Р°РІРёС€Р° - РІС‹С…РѕРґ РІ РіР»Р°РІРЅРѕРµ РјРµРЅСЋ; \n");
                 rewind(stdin);
                 scanf("%c", &fff);
                 rewind(stdin);
                 if (fff == '1')
                 {
                     NewMassiv = map(Massiv, *ukazf1);
-                    printf("\nMAP: массив из значений функций, умноженных на (-1):\n");
+                    printf("\nMAP: РјР°СЃСЃРёРІ РёР· Р·РЅР°С‡РµРЅРёР№ С„СѓРЅРєС†РёР№, СѓРјРЅРѕР¶РµРЅРЅС‹С… РЅР° (-1):\n");
                     for (int i = 0; i < NewMassiv.N; i++)
                     {
                         printf("\nf(%d) = ", i);
@@ -670,7 +670,7 @@ main()
                 if (fff == '2')
                 {
                     NewMassiv = where(Massiv, *ukazf2);
-                    printf("\nWHERE: массив из значений функций, кратных 2:\n");
+                    printf("\nWHERE: РјР°СЃСЃРёРІ РёР· Р·РЅР°С‡РµРЅРёР№ С„СѓРЅРєС†РёР№, РєСЂР°С‚РЅС‹С… 2:\n");
                     for (int i = 0; i < NewMassiv.N; i++)
                     {
                         printf("\nf(%d) = ", i);
@@ -679,11 +679,11 @@ main()
                 }
                 if (fff == '3')
                 {
-                    printf("\nВведите номер функции, которую вы хотите добавить(1-10): ");
+                    printf("\nР’РІРµРґРёС‚Рµ РЅРѕРјРµСЂ С„СѓРЅРєС†РёРё, РєРѕС‚РѕСЂСѓСЋ РІС‹ С…РѕС‚РёС‚Рµ РґРѕР±Р°РІРёС‚СЊ(1-10): ");
                     char numb;
                     scanf("%c", &numb);
                     if (numb < '1' && numb> '9')
-                        printf("\nТакой функции нет, повторите попытку ввода");
+                        printf("\nРўР°РєРѕР№ С„СѓРЅРєС†РёРё РЅРµС‚, РїРѕРІС‚РѕСЂРёС‚Рµ РїРѕРїС‹С‚РєСѓ РІРІРѕРґР°");
                     else
                     {
                         int numb_int = (numb - '0');
@@ -692,11 +692,11 @@ main()
                 }
                 if (fff == '4')
                 {
-                    printf("\nВведите номер элемента(0-%d): ", Massiv.N);
+                    printf("\nР’РІРµРґРёС‚Рµ РЅРѕРјРµСЂ СЌР»РµРјРµРЅС‚Р°(0-%d): ", Massiv.N);
                     int num = 1;
                     scanf("%d", &num);
                     if (num < '0' && num > Massiv.N)
-                        printf("\nТакого элемента не существует, повторите попытку ввода");
+                        printf("\nРўР°РєРѕРіРѕ СЌР»РµРјРµРЅС‚Р° РЅРµ СЃСѓС‰РµСЃС‚РІСѓРµС‚, РїРѕРІС‚РѕСЂРёС‚Рµ РїРѕРїС‹С‚РєСѓ РІРІРѕРґР°");
                     else
                     {
                         printf("\nf(%d) = ", num);
@@ -705,7 +705,7 @@ main()
                 }
                 if (fff == '5')
                 {
-                    printf("\nЗначения функций в массиве:");
+                    printf("\nР—РЅР°С‡РµРЅРёСЏ С„СѓРЅРєС†РёР№ РІ РјР°СЃСЃРёРІРµ:");
                     for (int i = 0; i < Massiv.N; i++)
                     {
                         printf("\nf(%d) = ", i);
@@ -715,40 +715,40 @@ main()
             }
         }
 
-        if (deistvie_int == 4)//Ручной ввод функций char
+        if (deistvie_int == 4)//Р СѓС‡РЅРѕР№ РІРІРѕРґ С„СѓРЅРєС†РёР№ char
         {
             flag = 1;
             Massiv.tip = 'c';
-            printf("\nВведите количество элементов в массиве(<10)");
+            printf("\nР’РІРµРґРёС‚Рµ РєРѕР»РёС‡РµСЃС‚РІРѕ СЌР»РµРјРµРЅС‚РѕРІ РІ РјР°СЃСЃРёРІРµ(<10)");
             scanf("%d", &Massiv.N);
-            Massiv.A = (void**)malloc(Massiv.N * sizeof(void*)); // динамический массив указателей на функции 
-                   //указатели на функции
+            Massiv.A = (void**)malloc(Massiv.N * sizeof(void*)); // РґРёРЅР°РјРёС‡РµСЃРєРёР№ РјР°СЃСЃРёРІ СѓРєР°Р·Р°С‚РµР»РµР№ РЅР° С„СѓРЅРєС†РёРё 
+                   //СѓРєР°Р·Р°С‚РµР»Рё РЅР° С„СѓРЅРєС†РёРё
             for (int i = 0; i < Massiv.N; i++)
                 Massiv.A[i] = mass_fchar()[i];
-            printf("\nЗначения функций в массиве: ");
+            printf("\nР—РЅР°С‡РµРЅРёСЏ С„СѓРЅРєС†РёР№ РІ РјР°СЃСЃРёРІРµ: ");
             for (int i = 0; i < Massiv.N; i++)
             {
-                printf("\n %d строка: ", i);
+                printf("\n %d СЃС‚СЂРѕРєР°: ", i);
                 printf("%s", (((char* (*)(char*, char k[20])) Massiv.A[i])) (Massiv. sukaz_arg[i], Massiv.s_arg[i]));
             }
             char fff = '1';
             while (fff >= '1' && fff <= '2')
             {
-                printf("\nФункции: 1 - map; 2 -where; Любая другая клавиша - выход в главное меню; \n");
+                printf("\nР¤СѓРЅРєС†РёРё: 1 - map; 2 -where; Р›СЋР±Р°СЏ РґСЂСѓРіР°СЏ РєР»Р°РІРёС€Р° - РІС‹С…РѕРґ РІ РіР»Р°РІРЅРѕРµ РјРµРЅСЋ; \n");
                 rewind(stdin);
                 scanf("%c", &fff);
                 rewind(stdin);
                 char fff = '1';
                 while (fff >= '1' && fff <= '5')
                 {
-                    printf("\nФункции: 1 - map;\n 2 -where;\n 3 - добавить элемент,\n 4 - вывести элемент под номером i,\n 5 - вывести на экран все элементы,\nЛюбая другая клавиша - выход в главное меню; \n");
+                    printf("\nР¤СѓРЅРєС†РёРё: 1 - map;\n 2 -where;\n 3 - РґРѕР±Р°РІРёС‚СЊ СЌР»РµРјРµРЅС‚,\n 4 - РІС‹РІРµСЃС‚Рё СЌР»РµРјРµРЅС‚ РїРѕРґ РЅРѕРјРµСЂРѕРј i,\n 5 - РІС‹РІРµСЃС‚Рё РЅР° СЌРєСЂР°РЅ РІСЃРµ СЌР»РµРјРµРЅС‚С‹,\nР›СЋР±Р°СЏ РґСЂСѓРіР°СЏ РєР»Р°РІРёС€Р° - РІС‹С…РѕРґ РІ РіР»Р°РІРЅРѕРµ РјРµРЅСЋ; \n");
                     rewind(stdin);
                     scanf("%c", &fff);
                     rewind(stdin);
                     if (fff == '1')
                     {
                         NewMassiv = map(Massiv, *ukazf1);
-                        printf("\nMAP: массив функций, где функция, начинающаяся на строчную букву, меняется со следующей функцией местами : \n");
+                        printf("\nMAP: РјР°СЃСЃРёРІ С„СѓРЅРєС†РёР№, РіРґРµ С„СѓРЅРєС†РёСЏ, РЅР°С‡РёРЅР°СЋС‰Р°СЏСЃСЏ РЅР° СЃС‚СЂРѕС‡РЅСѓСЋ Р±СѓРєРІСѓ, РјРµРЅСЏРµС‚СЃСЏ СЃРѕ СЃР»РµРґСѓСЋС‰РµР№ С„СѓРЅРєС†РёРµР№ РјРµСЃС‚Р°РјРё : \n");
                         for (int i = 0; i < NewMassiv.N; i++)
                         {
                             printf("\nf(%d) = ", i);
@@ -758,7 +758,7 @@ main()
                     if (fff == '2')
                     {
                         NewMassiv = where(Massiv, *ukazf2);
-                        printf("\nWhere: массив функций, возвращающих строки, начинающиеся на заглавные буквы:\n");
+                        printf("\nWhere: РјР°СЃСЃРёРІ С„СѓРЅРєС†РёР№, РІРѕР·РІСЂР°С‰Р°СЋС‰РёС… СЃС‚СЂРѕРєРё, РЅР°С‡РёРЅР°СЋС‰РёРµСЃСЏ РЅР° Р·Р°РіР»Р°РІРЅС‹Рµ Р±СѓРєРІС‹:\n");
                         for (int i = 0; i < NewMassiv.N; i++)
                         {
                             printf("\nf(%d) = ", i);
@@ -767,11 +767,11 @@ main()
                     }
                         if (fff == '3')
                         {
-                            printf("\nВведите номер функции, которую вы хотите добавить(1-9): ");
+                            printf("\nР’РІРµРґРёС‚Рµ РЅРѕРјРµСЂ С„СѓРЅРєС†РёРё, РєРѕС‚РѕСЂСѓСЋ РІС‹ С…РѕС‚РёС‚Рµ РґРѕР±Р°РІРёС‚СЊ(1-9): ");
                             char numb;
                             scanf("%c", &numb);
                             if (numb < '1' && numb> '9')
-                                printf("\nТакой функции нет, повторите попытку ввода");
+                                printf("\nРўР°РєРѕР№ С„СѓРЅРєС†РёРё РЅРµС‚, РїРѕРІС‚РѕСЂРёС‚Рµ РїРѕРїС‹С‚РєСѓ РІРІРѕРґР°");
                             else
                             {
                                 int numb_int = (numb - '0');
@@ -780,23 +780,23 @@ main()
                         }
                         if (fff == '4')
                         {
-                            printf("\nВведите номер элемента(0-%d): ", Massiv.N);
+                            printf("\nР’РІРµРґРёС‚Рµ РЅРѕРјРµСЂ СЌР»РµРјРµРЅС‚Р°(0-%d): ", Massiv.N);
                             int num = 1;
                             scanf("%d", &num);
                             if (num < '0' && num > Massiv.N)
-                                printf("\nТакого элемента не существует, повторите попытку ввода");
+                                printf("\nРўР°РєРѕРіРѕ СЌР»РµРјРµРЅС‚Р° РЅРµ СЃСѓС‰РµСЃС‚РІСѓРµС‚, РїРѕРІС‚РѕСЂРёС‚Рµ РїРѕРїС‹С‚РєСѓ РІРІРѕРґР°");
                             else
                             {
-                                printf("\n f%d строка: ", num);
+                                printf("\n f%d СЃС‚СЂРѕРєР°: ", num);
                                 printf("%s", (((char* (*)(char*, char k[20])) Massiv.A[num - 1])) (Massiv.sukaz_arg[num - 1], Massiv.s_arg[num - 1]));
                             }
                         }
                         if (fff == '5')
                         {
-                            printf("\nЗначения функций в массиве: ");
+                            printf("\nР—РЅР°С‡РµРЅРёСЏ С„СѓРЅРєС†РёР№ РІ РјР°СЃСЃРёРІРµ: ");
                             for (int i = 0; i < Massiv.N; i++)
                             {
-                                printf("\n f%d строка: ", i);
+                                printf("\n f%d СЃС‚СЂРѕРєР°: ", i);
                                 printf("%s", (((char* (*)(char*, char k[20])) Massiv.A[i])) (Massiv.sukaz_arg[i], Massiv.s_arg[i]));
                             }
                         }
@@ -804,24 +804,24 @@ main()
             }
         }
 
-        if (deistvie_int == 5) //ручной ввод строк
+        if (deistvie_int == 5) //СЂСѓС‡РЅРѕР№ РІРІРѕРґ СЃС‚СЂРѕРє
         {
             flag = 1;
             Massiv.tip = 's';
-            printf("\nВведите количество элементов в массиве: ");
+            printf("\nР’РІРµРґРёС‚Рµ РєРѕР»РёС‡РµСЃС‚РІРѕ СЌР»РµРјРµРЅС‚РѕРІ РІ РјР°СЃСЃРёРІРµ: ");
             rewind(stdin);
             scanf("%d", &Massiv.N);
-            printf("\nВведите длину строки: ");
+            printf("\nР’РІРµРґРёС‚Рµ РґР»РёРЅСѓ СЃС‚СЂРѕРєРё: ");
             rewind(stdin);
             scanf("%d", &Massiv.dlinstr);
             rewind(stdin);
-            Massiv.A = (void**)malloc(Massiv.N * sizeof(void*)); // динамический массив указателей на строки
+            Massiv.A = (void**)malloc(Massiv.N * sizeof(void*)); // РґРёРЅР°РјРёС‡РµСЃРєРёР№ РјР°СЃСЃРёРІ СѓРєР°Р·Р°С‚РµР»РµР№ РЅР° СЃС‚СЂРѕРєРё
             char* a = (char*)malloc((Massiv.N) * Massiv.dlinstr * sizeof(char));
-            printf("\nВведите  строки из %d символов(в случае переполнения учитываются первые %d введенных символа)", Massiv.dlinstr, Massiv.dlinstr);
+            printf("\nР’РІРµРґРёС‚Рµ  СЃС‚СЂРѕРєРё РёР· %d СЃРёРјРІРѕР»РѕРІ(РІ СЃР»СѓС‡Р°Рµ РїРµСЂРµРїРѕР»РЅРµРЅРёСЏ СѓС‡РёС‚С‹РІР°СЋС‚СЃСЏ РїРµСЂРІС‹Рµ %d РІРІРµРґРµРЅРЅС‹С… СЃРёРјРІРѕР»Р°)", Massiv.dlinstr, Massiv.dlinstr);
             rewind(stdin);
             for (int i = 0; i < Massiv.N; i++)
             {
-                printf("\n%d строка:", i);
+                printf("\n%d СЃС‚СЂРѕРєР°:", i);
                 for (int j = 0; j < Massiv.dlinstr; j++)
                     scanf("%c", (a + i * Massiv.dlinstr + j));
                 rewind(stdin);
@@ -829,24 +829,24 @@ main()
 
             for (int i = 0; i < Massiv.N; i++)
                 Massiv.A[i] = a + i * Massiv.dlinstr;
-            printf("\n Cтроки в динамическом массиве:");
+            printf("\n CС‚СЂРѕРєРё РІ РґРёРЅР°РјРёС‡РµСЃРєРѕРј РјР°СЃСЃРёРІРµ:");
             for (int i = 0; i < Massiv.N; i++)
             {
-                printf("\n %d строка:", i);
+                printf("\n %d СЃС‚СЂРѕРєР°:", i);
                 for (int j = 0; j < Massiv.dlinstr; j++)
                     printf("%c", *((char*)Massiv.A[i] + j));
             }
             char fff = '1';
             while (fff >= '1' && fff <= '5')
             {
-                printf("\nФункции: 1 - map;\n 2 -where;\n 3 - добавить элемент,\n 4 - вывести элемент под номером i,\n 5 - вывести на экран все элементы,\nЛюбая другая клавиша - выход в главное меню; \n");
+                printf("\nР¤СѓРЅРєС†РёРё: 1 - map;\n 2 -where;\n 3 - РґРѕР±Р°РІРёС‚СЊ СЌР»РµРјРµРЅС‚,\n 4 - РІС‹РІРµСЃС‚Рё СЌР»РµРјРµРЅС‚ РїРѕРґ РЅРѕРјРµСЂРѕРј i,\n 5 - РІС‹РІРµСЃС‚Рё РЅР° СЌРєСЂР°РЅ РІСЃРµ СЌР»РµРјРµРЅС‚С‹,\nР›СЋР±Р°СЏ РґСЂСѓРіР°СЏ РєР»Р°РІРёС€Р° - РІС‹С…РѕРґ РІ РіР»Р°РІРЅРѕРµ РјРµРЅСЋ; \n");
                 rewind(stdin);
                 scanf("%c", &fff);
                 rewind(stdin);
                 if (fff == '1')
                 {
                     NewMassiv = map(Massiv, *ukazf1);
-                    printf("\nMAP: Переводим первые буквы в каждой строке в заглавные: \n");
+                    printf("\nMAP: РџРµСЂРµРІРѕРґРёРј РїРµСЂРІС‹Рµ Р±СѓРєРІС‹ РІ РєР°Р¶РґРѕР№ СЃС‚СЂРѕРєРµ РІ Р·Р°РіР»Р°РІРЅС‹Рµ: \n");
                     for (int i = 0; i < Massiv.N; i++)
                     {
                         printf("\ns%d - ", i);
@@ -856,17 +856,17 @@ main()
                 if (fff == '2')
                 {
                     NewMassiv = where(Massiv, *ukazf2);
-                    printf("\nWhere: Строки, начинающиеся на буквы:\n");
+                    printf("\nWhere: РЎС‚СЂРѕРєРё, РЅР°С‡РёРЅР°СЋС‰РёРµСЃСЏ РЅР° Р±СѓРєРІС‹:\n");
                     for (int i = 0; i < NewMassiv.N; i++)
                     {
-                        printf("\n %d строка:", i);
+                        printf("\n %d СЃС‚СЂРѕРєР°:", i);
                         for (int j = 0; j < NewMassiv.dlinstr; j++)
                             printf("%c", *((char*)NewMassiv.A[i] + j));
                     }
                 }
                 if (fff == '3')
                 {
-                    printf("\nВведите строку, которую вы хотите добавить(длины %d): ", Massiv.dlinstr);
+                    printf("\nР’РІРµРґРёС‚Рµ СЃС‚СЂРѕРєСѓ, РєРѕС‚РѕСЂСѓСЋ РІС‹ С…РѕС‚РёС‚Рµ РґРѕР±Р°РІРёС‚СЊ(РґР»РёРЅС‹ %d): ", Massiv.dlinstr);
                     void* a = (void*)malloc(Massiv.dlinstr * sizeof(char));
                     for (int j = 0; j < Massiv.dlinstr; j++)
                         scanf("%c", (char*)a + j);
@@ -875,11 +875,11 @@ main()
                 }
                 if (fff == '4')
                 {
-                    printf("\nВведите номер элемента(0-%d): ", Massiv.N);
+                    printf("\nР’РІРµРґРёС‚Рµ РЅРѕРјРµСЂ СЌР»РµРјРµРЅС‚Р°(0-%d): ", Massiv.N);
                     int num = 1;
                     scanf("%d", &num);
                     if (num < '0' && num > Massiv.N)
-                        printf("\nТакого элемента не существует, повторите попытку ввода");
+                        printf("\nРўР°РєРѕРіРѕ СЌР»РµРјРµРЅС‚Р° РЅРµ СЃСѓС‰РµСЃС‚РІСѓРµС‚, РїРѕРІС‚РѕСЂРёС‚Рµ РїРѕРїС‹С‚РєСѓ РІРІРѕРґР°");
                     else
                     {
                         printf("\nf(%d) = ", num);
@@ -889,10 +889,10 @@ main()
                 }
                 if (fff == '5')
                 {
-                    printf("\n Cтроки в динамическом массиве:");
+                    printf("\n CС‚СЂРѕРєРё РІ РґРёРЅР°РјРёС‡РµСЃРєРѕРј РјР°СЃСЃРёРІРµ:");
                     for (int i = 0; i < Massiv.N; i++)
                     {
-                        printf("\n %d строка:", i);
+                        printf("\n %d СЃС‚СЂРѕРєР°:", i);
                         for (int j = 0; j < Massiv.dlinstr; j++)
                             printf("%c", *((char*)Massiv.A[i] + j));
                     }
@@ -907,28 +907,28 @@ main()
             string.dlins1 = rand() % 13 + 1;
             string.dlins2 = rand() % 17 + 1;
             string.dlins_out = string.dlins1 + string.dlins2;
-            printf("Длина 1 строки: %d;\n Длина 2 строки: %d", string.dlins1, string.dlins2);
+            printf("Р”Р»РёРЅР° 1 СЃС‚СЂРѕРєРё: %d;\n Р”Р»РёРЅР° 2 СЃС‚СЂРѕРєРё: %d", string.dlins1, string.dlins2);
             string.s1 = (char*)malloc(string.dlins1 * sizeof(char));
             string.s2 = (char*)malloc(string.dlins2 * sizeof(char));
             string.s_out = (char*)malloc(string.dlins_out * sizeof(char));
             int set_len;
             set_len = strlen(SET);
             srand(string.dlins1);
-            printf("\n 1 строка: ");
+            printf("\n 1 СЃС‚СЂРѕРєР°: ");
             for (int i = 0; i < string.dlins1; i++)
             {
                 string.s1[i] = SET[(rand() + i) % set_len];
                 printf("%c", string.s1[i]);
             }
             srand(string.dlins2);
-            printf("\n 2 строка: ");
+            printf("\n 2 СЃС‚СЂРѕРєР°: ");
             for (int i = 0; i < string.dlins2; i++)
             {
                 string.s2[i] = SET[(rand() + i) % set_len];
                 printf("%c", string.s2[i]);
             }
             string.s_out = concat(string);
-            printf("\nf1 Склеенная строка: ");
+            printf("\nf1 РЎРєР»РµРµРЅРЅР°СЏ СЃС‚СЂРѕРєР°: ");
             for (int i = 0; i < string.dlins_out; i++)
                 printf("%c", string.s_out[i]);
         }
