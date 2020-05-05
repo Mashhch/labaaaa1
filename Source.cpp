@@ -227,52 +227,56 @@ void ctest2(String string)
 
 }
 
-Arr F1(Arr Massiv)
+void* F1(void* A)
 {
-    void* R;
-    int* a = (int*)malloc(Massiv.N * sizeof(int));
-    int N = Massiv.N;
-    if (Massiv.tip == 'i' ) //int func
+    int flag = 0;
+    char* sukaz_arg[9]; 
+    char s_arg[9][20];
+    for (int i = 0; i < 9; i++)
     {
-        for (int i = 0; i < Massiv.N; i++)
-            a[i] = ((int(*)(int))Massiv.A[i])(Massiv.arg) * (-1); // массив чисел * -1    
-        Massiv.A = malloc(Massiv.N * sizeof(int*));
-        for (int i = 0; i < Massiv.N; i++)
-            (int*)Massiv.A[i] = a[i];
+        for (int j = 0; j < 2; j++)
+            s_arg[i][j] = '0';
+        sukaz_arg[i] = &s_arg[i];
     }
-    if (Massiv.tip == 's') // stroka
+    for (int i = 0; i < 9; i++)
     {
-        for (int i = 0; i < Massiv.N; i++)
+        if (A == mass_fchar()[i])
         {
-            if ('a' <= *((char*)Massiv.A[i]) && *((char*)Massiv.A[i]) <= 'z')
-                *((char*)Massiv.A[i]) = *((char*)Massiv.A[i]) + 'A' - 'a'; 
-        }
-    }
-
-    if (Massiv.tip == 'c') // char func
-    {
-        for (int j = 0; j < Massiv.N; j++)
-        {
-            for (int i = 0; i < Massiv.N - 1; i++)
+            flag = 1;
+            if ('a' <= *(((char* (*)(char*, char k[20])) A) (sukaz_arg, s_arg)) && *(((char* (*)(char*, char k[20])) A) (sukaz_arg, s_arg)) <= 'z')
             {
-
-                if ('a' <= *(((char* (*)(char*, char k[20])) Massiv.A[i]) (Massiv.sukaz_arg[i], Massiv.s_arg[i])) && *(((char* (*)(char*, char k[20])) Massiv.A[i]) (Massiv.sukaz_arg[i], Massiv.s_arg[i])) <= 'z')
+                if (i != 0)
                 {
-                    R = Massiv.A[i];
-                    Massiv.A[i] = Massiv.A[i + 1];
-                    Massiv.A[i + 1] = R;
+                    A = mass_fchar()[i - 1];
                 }
             }
         }
     }
-    return Massiv;
+
+    for (int i = 0; i < 10; i++)
+    {
+        if (A == mass_fint()[i])
+        {
+            flag = 1;
+            (int*)A = ((int(*)(int))mass_fint()[i])(i)* (-1);
+        }
+    }
+
+    if (flag == 0)
+    {
+        if (*((char*)A) <= 'z' && *((char*)A) >= 'a')
+             *((char*)A) = *((char*)A) + 'A' - 'a';
+    }
+
+    return A;
 }
 
-Arr map( Arr Massiv, Arr F(Arr Massiv))
+Arr map( Arr Massiv, void* F(void*))
 {
     Arr NewMassiv;
     NewMassiv = Massiv;
-   NewMassiv = (*F)(NewMassiv);
+    for (int i = 0;i<NewMassiv.N;i++)
+      NewMassiv.A[i] = (*F)(NewMassiv.A[i]);
     return NewMassiv;
 }
 
@@ -337,7 +341,7 @@ main()
     Arr Massiv;
     Arr NewMassiv;
     String string;
-    Arr (*ukazf1)(Arr Massiv);
+    void* (*ukazf1)(void* A);
     int (*ukazf2)(Arr Massiv);
     Massiv.N = 0;
     Massiv.tip = '0'; //  i - integer, c -char, s - stroka
@@ -400,7 +404,7 @@ main()
                 if (fff == '1')
                 {
                     NewMassiv = map(Massiv, *ukazf1);
-                    printf("\nMAP: массив из значений функций, умноженных на (-1):\n");
+                    printf("\nMAP: В i функцию посылается arg = i, значение умножается на (-1):\n");
                     for (int i = 0; i < NewMassiv.N; i++)
                     {
                         printf("\nf(%d) = ", i);
@@ -483,7 +487,7 @@ main()
                 if (fff == '1')
                 {
                     NewMassiv = map(Massiv, *ukazf1);
-                    printf("\nMAP: массив функций, где функция, начинающаяся на строчную букву, меняется со следующей функцией местами : \n");
+                    printf("\nMAP: массив указателей на функцийЖ если функция начинающаяся на строчную букву, \nячейке массива присваевается адрес предыдущей по номеру функции: \n");
                     for (int i = 0; i < NewMassiv.N; i++)
                     {
                         printf("\nf(%d) = ", i);
@@ -576,7 +580,7 @@ main()
                 if (fff == '1')
                 {
                     NewMassiv = map(Massiv, *ukazf1);
-                    printf("\nMAP: Переводим первые буквы в каждой строке в заглавные: \n");
+                    printf("\nMAP: Массив первых букв строк, переведенных в заглавные: \n");
                     for (int i = 0; i < Massiv.N; i++)
                     {
                         printf("\ns%d - ", i);
@@ -660,7 +664,7 @@ main()
                 if (fff == '1')
                 {
                     NewMassiv = map(Massiv, *ukazf1);
-                    printf("\nMAP: массив из значений функций, умноженных на (-1):\n");
+                    printf("\nMAP: В i функцию посылается arg = i, значение умножается на (-1):\n");
                     for (int i = 0; i < NewMassiv.N; i++)
                     {
                         printf("\nf(%d) = ", i);
@@ -748,7 +752,7 @@ main()
                     if (fff == '1')
                     {
                         NewMassiv = map(Massiv, *ukazf1);
-                        printf("\nMAP: массив функций, где функция, начинающаяся на строчную букву, меняется со следующей функцией местами : \n");
+                        printf("\nMAP: массив указателей на функцийЖ если функция начинающаяся на строчную букву, \nячейке массива присваевается адрес предыдущей по номеру функции: \n");
                         for (int i = 0; i < NewMassiv.N; i++)
                         {
                             printf("\nf(%d) = ", i);
@@ -846,7 +850,7 @@ main()
                 if (fff == '1')
                 {
                     NewMassiv = map(Massiv, *ukazf1);
-                    printf("\nMAP: Переводим первые буквы в каждой строке в заглавные: \n");
+                    printf("\nMAP: Массив первых букв строк, переведенных в заглавные: \n");
                     for (int i = 0; i < Massiv.N; i++)
                     {
                         printf("\ns%d - ", i);
