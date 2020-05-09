@@ -137,8 +137,6 @@ typedef struct {
     int dlins1;
     char* s2;
     int dlins2;
-    char* s_out; // склеенная строка
-    int dlins_out;
 } String;
 
 typedef struct {
@@ -146,15 +144,11 @@ typedef struct {
     int N; // колво элементов в массиве
     char tip; //  i - integer, c -char, s - stroka
     int dlinstr; // длина строк в массиве
-    int arg; //аргумент для int
-    char* sukaz_arg[9]; //аргумент для char
-    char s_arg[9][20]; //аргумент для char
-    int i; //счетчик для where
 }Arr;
 
 Arr AddElem(Arr Massiv, void* elem)
 {
-    void** elems = (void**)malloc((Massiv.N + 1) * sizeof(void*));
+    void** elems = (void**)malloc((unsigned long int)((Massiv.N) + 1) * sizeof(void*));
     for (int i = 0; i < Massiv.N; i++)
         elems[i] = Massiv.A[i];
     elems[Massiv.N] = elem;
@@ -164,34 +158,18 @@ Arr AddElem(Arr Massiv, void* elem)
     return Massiv;
 }
 
-char* concat(String string)
+char* concat(String string, char* s_out)
 {
+    s_out = (char*)malloc((string.dlins1 + string.dlins2 )* sizeof(char));
+    int dlins_out;
     for (int i = 0; i < string.dlins1; i++)
-        string.s_out[i] = string.s1[i];
+        s_out[i] = string.s1[i];
     for (int j = 0; j < string.dlins2; j++)
-        string.s_out[j + string.dlins1] = string.s2[j];
-    string.dlins_out = string.dlins1 + string.dlins2;
-    return string.s_out;
+        s_out[j + string.dlins1] = string.s2[j];
+    dlins_out = string.dlins1 + string.dlins2;
+    return s_out;
 }
- int ctestconcet(String string)
- {
-     int flag = 1;
-     for (int j = 0; j < string.dlins1; j++)
-     {
-         if (string.s1[j] != string.s_out[j])
-             flag = 0;
-     }
-     printf("%d", flag);
-     for (int j = 0; j < string.dlins2; j++)
-     {
-         if (string.s_out[j + string.dlins1] != string.s2[j])
-             flag = 0;
-     }
-     printf("%d", flag);
-     if (string.dlins_out != (string.dlins1 + string.dlins2))
-         flag = 0;
-     return flag;
- }
+
 
 void ctest1(Arr Massiv)
 {
@@ -203,28 +181,6 @@ void ctest1(Arr Massiv)
         printf("\nМассив хранит указатели на функции, возвращающие указатель на int");
     if (Massiv.tip == 's')
         printf("\nМассив хранит указатели на char");
-}
-
-void ctest2(String string)
-{
-    //concat
-    string.dlins1 = 6;
-    string.dlins2 = 4;
-    string.dlins_out = string.dlins1 + string.dlins2;
-    string.s1 = (char*)malloc(string.dlins1 * sizeof(char));
-    string.s2 = (char*)malloc(string.dlins2 * sizeof(char));
-    string.s_out = (char*)malloc(string.dlins_out * sizeof(char));
-    for (int i = 0; i < string.dlins1; i++)
-        string.s1[i] = 'A';
-    for (int i = 0; i < string.dlins2; i++)
-        string.s2[i] = 'a';
-    string.s_out = concat(string);
-    int test = ctestconcet(string);
-    if (test == 1)
-        printf("\nconcat correct");
-    else
-        printf("\nconcat incorrect");
-
 }
 
 void* F1(void* A)
@@ -280,79 +236,84 @@ Arr map( Arr Massiv, void* F(void*))
     return NewMassiv;
 }
 
-int boolf(Arr Massiv)
+int boolf(Arr Massiv, int i)
 {
+    char* sukaz_arg[9]; //аргумент для char
+    char s_arg[9][20]; //аргумент для char
+    for (int i = 0; i < 9; i++)
+    {
+        for (int j = 0; j < 2; j++)
+            s_arg[i][j] = '0';
+        sukaz_arg[i] = &s_arg[i];
+    }
     int flag = 0;
     if (Massiv.tip == 'i') //int func
     {
-            if (((int(*)(int))Massiv.A[Massiv.i])(Massiv.arg) %2 == 0)
-                flag = 1; // :2
+        if (((int(*)(int))Massiv.A[i])(i) % 3 == 0)
+        {
+            flag = 1; // :3
+        }
     }
     if (Massiv.tip == 's') // stroka
     {
-            if ('A' <= *((char*)Massiv.A[Massiv.i]) && *((char*)Massiv.A[Massiv.i]) <= 'Z')
-                flag = 1;// строка начинается на заглавную
-        }
+        if ('A' <= *((char*)Massiv.A[i]) && *((char*)Massiv.A[i]) <= 'Z')
+            flag = 1;// строка начинается на заглавную
+    }
 
     if (Massiv.tip == 'c') // char func
     {
-        if ('A' <= *(((char* (*)(char*, char k[20])) Massiv.A[Massiv.i]) (Massiv.sukaz_arg[Massiv.i], Massiv.s_arg[Massiv.i])) && *(((char* (*)(char*, char k[20])) Massiv.A[Massiv.i]) (Massiv.sukaz_arg[Massiv.i], Massiv.s_arg[Massiv.i])) <= 'Z')
-                flag = 1; // строка начинается на заглавную
+        if ('A' <= *(((char* (*)(char*, char k[20])) Massiv.A[i]) (sukaz_arg[i], s_arg[i])) && *(((char* (*)(char*, char k[20])) Massiv.A[i]) (sukaz_arg[i], s_arg[i])) <= 'Z')
+            flag = 1; // строка начинается на заглавную
     }
     if (flag == 1) return 1; else return 0;
 }
-Arr where(Arr Massiv, int F(Arr Massiv))
+Arr where(Arr Massiv, int F(Arr Massiv, int i))
 //void** where(int* newN, void** newA, int N, void** A, char tip, int arg, char* s1[9], char s[9][20],int (*F)(int i, void** A, char tip, int arg, char* s1[9], char s[9][20]))
 {
-    Arr NewMassiv; 
+    Arr NewMassiv;
     NewMassiv = Massiv;
     int j = 0;
     int chet = 0;
-    NewMassiv.i = 0;
+    int i = 0;
     int t;
-    for (NewMassiv.i = 0; NewMassiv.i <NewMassiv.N; NewMassiv.i++)
+    for (i = 0; i < NewMassiv.N; i++)
     {
-        t = (*F)(NewMassiv);
+        t = (*F)(NewMassiv, i);
         if (t == 1)
             chet++;
     }
     void** newA = (void**)malloc(chet * sizeof(void*));
-    Massiv.i = 0;
-    for (NewMassiv.i = 0; NewMassiv.i < NewMassiv.N; NewMassiv.i++)
+    for (i = 0; i < NewMassiv.N; i++)
     {
-        t = (*F)(NewMassiv);
+        t = (*F)(NewMassiv, i);
         if (t == 1)
         {
-            newA[j] = NewMassiv.A[NewMassiv.i];
+            newA[j] = NewMassiv.A[i];
             j++;
         }
     }
-    NewMassiv.A = malloc(chet * sizeof(void*));
     NewMassiv.N = chet;
-    for (int i = 0; i < NewMassiv.N; i++)
-        NewMassiv.A[i] = newA[i];
-
     return NewMassiv;
 }
 
-
 main()
 {
+    char* sukaz_arg[9];
+    char s_arg[9][20];
     Arr Massiv;
     Arr NewMassiv;
     String string;
     void* (*ukazf1)(void* A);
-    int (*ukazf2)(Arr Massiv);
+    int (*ukazf2)(Arr Massiv, int i);
     Massiv.N = 0;
     Massiv.tip = '0'; //  i - integer, c -char, s - stroka
     Massiv.dlinstr = 0; // длина строк в массиве
-    Massiv.arg=0;
-    Massiv.i = 0; //счетчик
+    int arg = 0;
     for (int i = 0; i < 9; i++)
     {
         for (int j = 0; j < 2; j++)
-            (Massiv.s_arg)[i][j] = '0';
-        Massiv.sukaz_arg[i] = &Massiv.s_arg[i];
+            (s_arg)[i][j] = '0';
+        sukaz_arg[i] = &s_arg[i];
     }
     system("chcp 1251");
     system("cls");
@@ -379,7 +340,7 @@ main()
         if (deistvie_int == 0) //Автоматический ввод функций int
         {
             flag = 1;
-            Massiv.arg = rand() % 15;
+            arg = rand() % 15;
             Massiv.tip = 'i';
             Massiv.N = rand() % 9 + 1;
             printf("Колличество элементов в массиве: %d", Massiv.N);
@@ -387,12 +348,12 @@ main()
                    //указатели на функции
             for (int i = 0; i < Massiv.N; i++)
                 Massiv.A[i] = mass_fint()[i];
-            printf("Значение, подаваемое в функции: %d", Massiv.arg);
+            printf("Значение, подаваемое в функции: %d", arg);
             printf("\nЗначения функций в массиве:");
             for (int i = 0; i < Massiv.N; i++)
             {
                 printf("\nf(%d) = ", i);
-                printf("%d", ((int(*)(int))Massiv.A[i])(Massiv.arg));
+                printf("%d", ((int(*)(int))Massiv.A[i])(arg));
             }
             char fff = '1';
             while (fff >= '1' && fff <= '5')
@@ -414,11 +375,11 @@ main()
                 if (fff == '2')
                 {
                     NewMassiv = where(Massiv, *ukazf2);
-                    printf("\nWHERE: массив из значений функций, кратных 2:\n");
+                    printf("\nWHERE: массив из значений функций, кратных 3, при arg = i:\n");
                     for (int i = 0; i < NewMassiv.N; i++)
                     {
                         printf("\nf(%d) = ", i);
-                        printf("%d", ((int(*)(int))(NewMassiv.A)[i])(NewMassiv.arg));
+                        printf("%d", ((int(*)(int))(NewMassiv.A)[i])(arg));
                     }
                 }
                 if (fff == '3')
@@ -431,7 +392,7 @@ main()
                     else
                     {
                         int numb_int = (numb - '0');
-                        Massiv = AddElem(Massiv, mass_fint()[numb_int-1]);
+                        Massiv = AddElem(Massiv, mass_fint()[numb_int - 1]);
                     }
                 }
                 if (fff == '4')
@@ -444,7 +405,7 @@ main()
                     else
                     {
                         printf("\nf(%d) = ", num);
-                        printf("%d", ((int(*)(int))(Massiv.A)[num])(Massiv.arg));
+                        printf("%d", ((int(*)(int))(Massiv.A)[num])(arg));
                     }
                 }
                 if (fff == '5')
@@ -453,7 +414,7 @@ main()
                     for (int i = 0; i < Massiv.N; i++)
                     {
                         printf("\nf(%d) = ", i);
-                        printf("%d", ((int(*)(int))Massiv.A[i])(Massiv.arg));
+                        printf("%d", ((int(*)(int))Massiv.A[i])(arg));
                     }
                 }
             }
@@ -463,7 +424,7 @@ main()
         if (deistvie_int == 1)//Автоматический ввод функций char
         {
             flag = 1;
-            Massiv.tip= 'c';
+            Massiv.tip = 'c';
             Massiv.N = rand() % 9 + 1;
             printf("Колличество элементов в массиве: %d", Massiv.N);
             Massiv.A = (void**)malloc(Massiv.N * sizeof(void*)); // динамический массив указателей на функции 
@@ -474,7 +435,7 @@ main()
             for (int i = 0; i < Massiv.N; i++)
             {
                 printf("\n f%d строка: ", i);
-                printf("%s", (((char* (*)(char*, char k[20])) Massiv.A[i])) (Massiv.sukaz_arg[i], Massiv.s_arg[i]));
+                printf("%s", (((char* (*)(char*, char k[20])) Massiv.A[i])) (sukaz_arg[i], s_arg[i]));
             }
 
             char fff = '1';
@@ -491,7 +452,7 @@ main()
                     for (int i = 0; i < NewMassiv.N; i++)
                     {
                         printf("\nf(%d) = ", i);
-                        printf("%s", (((char* (*)(char*, char k[20])) Massiv.A[i])) (Massiv.sukaz_arg[i], Massiv.s_arg[i]));
+                        printf("%s", (((char* (*)(char*, char k[20])) Massiv.A[i])) (sukaz_arg[i], s_arg[i]));
                     }
                 }
                 if (fff == '2')
@@ -501,45 +462,45 @@ main()
                     for (int i = 0; i < NewMassiv.N; i++)
                     {
                         printf("\nf(%d) = ", i);
-                        printf("%s", (((char* (*)(char*, char k[20])) NewMassiv.A[i])) (NewMassiv.sukaz_arg[i], NewMassiv.s_arg[i]));
+                        printf("%s", (((char* (*)(char*, char k[20])) NewMassiv.A[i])) (sukaz_arg, s_arg));
                     }
                 }
                 if (fff == '3')
                 {
-                        printf("\nВведите номер функции, которую вы хотите добавить(1-9): ");
-                        char numb;
-                        rewind(stdin);
-                        scanf("%c", &numb);
-                        if (numb < '1' && numb> '9')
-                            printf("\nТакой функции нет, повторите попытку ввода");
-                        else
-                        {
-                            int numb_int = (numb - '0');
-                            Massiv = AddElem(Massiv, mass_fchar()[numb_int - 1]);
-                        }
+                    printf("\nВведите номер функции, которую вы хотите добавить(1-9): ");
+                    char numb;
+                    rewind(stdin);
+                    scanf("%c", &numb);
+                    if (numb < '1' && numb> '9')
+                        printf("\nТакой функции нет, повторите попытку ввода");
+                    else
+                    {
+                        int numb_int = (numb - '0');
+                        Massiv = AddElem(Massiv, mass_fchar()[numb_int - 1]);
+                    }
                 }
                 if (fff == '4')
                 {
-                        printf("\nВведите номер элемента(0-%d): ", Massiv.N);
-                        int num = 1;
-                        scanf("%d", &num);
-                        if (num < '0' && num > Massiv.N)
-                            printf("\nТакого элемента не существует, повторите попытку ввода");
-                        else
-                        {
-                            printf("\n f%d строка: ", num);
-                            printf("%s", (((char* (*)(char*, char k[20])) Massiv.A[num-1])) (Massiv.sukaz_arg[num-1], Massiv.s_arg[num-1]));
-                        }
-                }
-                    if (fff == '5')
+                    printf("\nВведите номер элемента(0-%d): ", Massiv.N);
+                    int num = 1;
+                    scanf("%d", &num);
+                    if (num < '0' && num > Massiv.N)
+                        printf("\nТакого элемента не существует, повторите попытку ввода");
+                    else
                     {
-                        printf("\nЗначения функций в массиве: ");
-                        for (int i = 0; i < Massiv.N; i++)
-                        {
-                            printf("\n f%d строка: ", i);
-                            printf("%s", (((char* (*)(char*, char k[20])) Massiv.A[i])) (Massiv.sukaz_arg[i], Massiv.s_arg[i]));
-                        }
+                        printf("\n f%d строка: ", num);
+                        printf("%s", (((char* (*)(char*, char k[20])) Massiv.A[num - 1])) (sukaz_arg[num - 1], s_arg[num - 1]));
                     }
+                }
+                if (fff == '5')
+                {
+                    printf("\nЗначения функций в массиве: ");
+                    for (int i = 0; i < Massiv.N; i++)
+                    {
+                        printf("\n f%d строка: ", i);
+                        printf("%s", (((char* (*)(char*, char k[20])) Massiv.A[i])) (sukaz_arg, s_arg));
+                    }
+                }
             }
         }
 
@@ -552,7 +513,7 @@ main()
             printf("\nКолличество элементов в массиве: %d", Massiv.N);
             printf("\nДлина строк: %d", Massiv.dlinstr);
             Massiv.A = (void**)malloc(Massiv.N * sizeof(void*)); // динамический массив указателей на строки
-            char* a = (char*)malloc((Massiv.N) * Massiv.dlinstr * sizeof(char));
+            char* a = (char*)malloc((unsigned long long)(Massiv.N) * (unsigned long long)Massiv.dlinstr * sizeof(char));
             for (int i = 0; i < Massiv.N; i++)
             {
                 for (int j = 0; j < Massiv.dlinstr; j++)
@@ -614,12 +575,12 @@ main()
                     int num = 1;
                     scanf("%d", &num);
                     if (num < '0' && num > Massiv.N)
-                         printf("\nТакого элемента не существует, повторите попытку ввода");
+                        printf("\nТакого элемента не существует, повторите попытку ввода");
                     else
                     {
-                     printf("\nf(%d) = ", num);
+                        printf("\nf(%d) = ", num);
                         for (int j = 0; j < Massiv.dlinstr; j++)
-                        printf("%c", *((char*)Massiv.A[num] + j));
+                            printf("%c", *((char*)Massiv.A[num] + j));
                     }
                 }
                 if (fff == '5')
@@ -633,14 +594,14 @@ main()
                     }
                 }
             }
-        free(a);
+            free(a);
         }
 
         if (deistvie_int == 3)//ручной ввод функиций int
         {
             flag = 1;
             printf("\nВведите число, выступающее в качестве аргумента функций: ");
-            scanf("%d", &Massiv.arg);
+            scanf("%d", &arg);
             Massiv.tip = 'i';
             printf("\nВведите количество элементов в массиве(<10): ");
             scanf("%d", &Massiv.N);
@@ -652,7 +613,7 @@ main()
             for (int i = 0; i < Massiv.N; i++)
             {
                 printf("\nf(%d) = ", i);
-                printf("%d", ((int(*)(int))Massiv.A[i])(Massiv.arg));
+                printf("%d", ((int(*)(int))Massiv.A[i])(arg));
             }
             char fff = '1';
             while (fff >= '1' && fff <= '5')
@@ -674,11 +635,11 @@ main()
                 if (fff == '2')
                 {
                     NewMassiv = where(Massiv, *ukazf2);
-                    printf("\nWHERE: массив из значений функций, кратных 2:\n");
+                    printf("\nWHERE: массив из значений функций, кратных 3, при arg = i:\n");
                     for (int i = 0; i < NewMassiv.N; i++)
                     {
                         printf("\nf(%d) = ", i);
-                        printf("%d", ((int(*)(int))(NewMassiv.A)[i])(NewMassiv.arg));
+                        printf("%d", ((int(*)(int))(NewMassiv.A)[i])(arg));
                     }
                 }
                 if (fff == '3')
@@ -704,7 +665,7 @@ main()
                     else
                     {
                         printf("\nf(%d) = ", num);
-                        printf("%d", ((int(*)(int))(Massiv.A)[num])(Massiv.arg));
+                        printf("%d", ((int(*)(int))(Massiv.A)[num])(arg));
                     }
                 }
                 if (fff == '5')
@@ -713,7 +674,7 @@ main()
                     for (int i = 0; i < Massiv.N; i++)
                     {
                         printf("\nf(%d) = ", i);
-                        printf("%d", ((int(*)(int))Massiv.A[i])(Massiv.arg));
+                        printf("%d", ((int(*)(int))Massiv.A[i])(arg));
                     }
                 }
             }
@@ -733,7 +694,7 @@ main()
             for (int i = 0; i < Massiv.N; i++)
             {
                 printf("\n %d строка: ", i);
-                printf("%s", (((char* (*)(char*, char k[20])) Massiv.A[i])) (Massiv. sukaz_arg[i], Massiv.s_arg[i]));
+                printf("%s", (((char* (*)(char*, char k[20])) Massiv.A[i])) (sukaz_arg[i], s_arg[i]));
             }
             char fff = '1';
             while (fff >= '1' && fff <= '2')
@@ -756,7 +717,7 @@ main()
                         for (int i = 0; i < NewMassiv.N; i++)
                         {
                             printf("\nf(%d) = ", i);
-                            printf("%s", (((char* (*)(char*, char k[20])) Massiv.A[i])) (Massiv.sukaz_arg[i], Massiv.s_arg[i]));
+                            printf("%s", (((char* (*)(char*, char k[20])) Massiv.A[i])) (sukaz_arg[i], s_arg[i]));
                         }
                     }
                     if (fff == '2')
@@ -766,44 +727,44 @@ main()
                         for (int i = 0; i < NewMassiv.N; i++)
                         {
                             printf("\nf(%d) = ", i);
-                            printf("%s", (((char* (*)(char*, char k[20])) NewMassiv.A[i])) (NewMassiv.sukaz_arg[i], NewMassiv.s_arg[i]));
+                            printf("%s", (((char* (*)(char*, char k[20])) NewMassiv.A[i])) (sukaz_arg, s_arg));
                         }
                     }
-                        if (fff == '3')
+                    if (fff == '3')
+                    {
+                        printf("\nВведите номер функции, которую вы хотите добавить(1-9): ");
+                        char numb;
+                        scanf("%c", &numb);
+                        if (numb < '1' && numb> '9')
+                            printf("\nТакой функции нет, повторите попытку ввода");
+                        else
                         {
-                            printf("\nВведите номер функции, которую вы хотите добавить(1-9): ");
-                            char numb;
-                            scanf("%c", &numb);
-                            if (numb < '1' && numb> '9')
-                                printf("\nТакой функции нет, повторите попытку ввода");
-                            else
-                            {
-                                int numb_int = (numb - '0');
-                                Massiv = AddElem(Massiv, mass_fchar()[numb_int - 1]);
-                            }
+                            int numb_int = (numb - '0');
+                            Massiv = AddElem(Massiv, mass_fchar()[numb_int - 1]);
                         }
-                        if (fff == '4')
+                    }
+                    if (fff == '4')
+                    {
+                        printf("\nВведите номер элемента(0-%d): ", Massiv.N);
+                        int num = 1;
+                        scanf("%d", &num);
+                        if (num < '0' && num > Massiv.N)
+                            printf("\nТакого элемента не существует, повторите попытку ввода");
+                        else
                         {
-                            printf("\nВведите номер элемента(0-%d): ", Massiv.N);
-                            int num = 1;
-                            scanf("%d", &num);
-                            if (num < '0' && num > Massiv.N)
-                                printf("\nТакого элемента не существует, повторите попытку ввода");
-                            else
-                            {
-                                printf("\n f%d строка: ", num);
-                                printf("%s", (((char* (*)(char*, char k[20])) Massiv.A[num - 1])) (Massiv.sukaz_arg[num - 1], Massiv.s_arg[num - 1]));
-                            }
+                            printf("\n f%d строка: ", num);
+                            printf("%s", (((char* (*)(char*, char k[20])) Massiv.A[num - 1])) (sukaz_arg[num - 1], s_arg[num - 1]));
                         }
-                        if (fff == '5')
+                    }
+                    if (fff == '5')
+                    {
+                        printf("\nЗначения функций в массиве: ");
+                        for (int i = 0; i < Massiv.N; i++)
                         {
-                            printf("\nЗначения функций в массиве: ");
-                            for (int i = 0; i < Massiv.N; i++)
-                            {
-                                printf("\n f%d строка: ", i);
-                                printf("%s", (((char* (*)(char*, char k[20])) Massiv.A[i])) (Massiv.sukaz_arg[i], Massiv.s_arg[i]));
-                            }
+                            printf("\n f%d строка: ", i);
+                            printf("%s", (((char* (*)(char*, char k[20])) Massiv.A[i])) (sukaz_arg[i], s_arg[i]));
                         }
+                    }
                 }
             }
         }
@@ -907,14 +868,16 @@ main()
 
         if (deistvie_int == 6) //concat
         {
+            char* s_out; // склеенная строка
+            int dlins_out;
             flag2 = 1;
             string.dlins1 = rand() % 13 + 1;
             string.dlins2 = rand() % 17 + 1;
-            string.dlins_out = string.dlins1 + string.dlins2;
+            dlins_out = string.dlins1 + string.dlins2;
             printf("Длина 1 строки: %d;\n Длина 2 строки: %d", string.dlins1, string.dlins2);
             string.s1 = (char*)malloc(string.dlins1 * sizeof(char));
             string.s2 = (char*)malloc(string.dlins2 * sizeof(char));
-            string.s_out = (char*)malloc(string.dlins_out * sizeof(char));
+            s_out = (char*)malloc(dlins_out * sizeof(char));
             int set_len;
             set_len = strlen(SET);
             srand(string.dlins1);
@@ -931,16 +894,15 @@ main()
                 string.s2[i] = SET[(rand() + i) % set_len];
                 printf("%c", string.s2[i]);
             }
-            string.s_out = concat(string);
+            s_out = concat(string,s_out);
             printf("\nf1 Склеенная строка: ");
-            for (int i = 0; i < string.dlins_out; i++)
-                printf("%c", string.s_out[i]);
+            for (int i = 0; i < string.dlins2+ string.dlins1; i++)
+                printf("%c", s_out[i]);
         }
 
         if (deistvie_int == 7)
         {
-           if (flag == 1) ctest1(Massiv);
-           if (flag2 ==1) ctest2(string);
+            if (flag == 1) ctest1(Massiv);
         }
     }
     free(Massiv.A);
