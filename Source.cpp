@@ -5,8 +5,6 @@
 #include <stdlib.h>
 #include <time.h>
 
-
-
 int f1(int n) { n = n + 1;  return n; }
 int f2(int n) { n = n + 2;  return n; }
 int f3(int n) { n = n + 3; return n; }
@@ -148,7 +146,7 @@ typedef struct {
 
 Arr AddElem(Arr Massiv, void* elem)
 {
-    void** elems = (void**)malloc((unsigned long int)((Massiv.N) + 1) * sizeof(void*));
+    void** elems = (void**)malloc((Massiv.N + 1) * sizeof(void*));
     for (int i = 0; i < Massiv.N; i++)
         elems[i] = Massiv.A[i];
     elems[Massiv.N] = elem;
@@ -156,6 +154,36 @@ Arr AddElem(Arr Massiv, void* elem)
     Massiv.N++;
     Massiv.A = elems;
     return Massiv;
+}
+
+void ctestaddelem()
+{
+    int k = 0;
+    int flag = 0;
+    Arr Massiv;
+    Massiv.N = 5;
+    Massiv.A = (void**)malloc(Massiv.N * sizeof(void*)); // динамический массив указателей на функции 
+                   //указатели на функции
+    for (int i = 0; i < Massiv.N; i++)
+        Massiv.A[i] = mass_fint()[i];
+    Massiv = AddElem(Massiv, (void*)(&f6));
+    for (int i = 0; i < Massiv.N; i++)
+    {
+        if (mass_fint()[i] != Massiv.A[i])
+            flag = 1;
+    }
+    for (int i = 0; i < Massiv.N; i++)
+        Massiv.A[i] = mass_fchar()[i];
+    Massiv = AddElem(Massiv, (void*)(&f17));
+    for (int i = 0; i < Massiv.N; i++)
+    {
+        if (mass_fchar()[i] != Massiv.A[i])
+            flag = 1;
+    }
+    if (flag == 1)
+        printf("AddElem incorrect\n");
+    else printf("AddElem correct\n");
+
 }
 
 char* concat(String string, char* s_out)
@@ -171,6 +199,37 @@ char* concat(String string, char* s_out)
 }
 
 
+void ctestconcat()
+{
+    int flag = 0;
+    String string;
+    string.dlins1 = 6;
+    string.dlins2 = 3;
+    int dlins_out = 9;
+    char* s_out1 = (char*)malloc(dlins_out * sizeof(char));
+    string.s1 = (char*)malloc(string.dlins1 * sizeof(char));
+    string.s2 = (char*)malloc(string.dlins2 * sizeof(char));
+    char* s_out = (char*)malloc(dlins_out * sizeof(char));
+    for (int i = 0; i < string.dlins1; i++)
+    {
+        string.s1[i] = '1';
+        s_out1[i] = '1';
+    }
+    for (int i = 0; i < string.dlins2; i++)
+    {
+        string.s2[i] = 'a';
+        s_out1[i + 6] = 'a';
+    }
+    s_out = concat(string, s_out);
+    for (int i = 0; i < 9; i++) {
+        if (s_out1[i] != s_out[i])
+            flag = 1;
+    }
+    if (flag == 1)
+        printf("Concat incorrect\n");
+    else printf("Concat correct\n");
+}
+
 void ctest1(Arr Massiv)
 {
     //struct Arr
@@ -183,9 +242,12 @@ void ctest1(Arr Massiv)
         printf("\nМассив хранит указатели на char");
 }
 
+
+
 void* F1(void* A)
 {
     int flag = 0;
+    int k = 0;
     char* sukaz_arg[9]; 
     char s_arg[9][20];
     for (int i = 0; i < 9; i++)
@@ -201,10 +263,7 @@ void* F1(void* A)
             flag = 1;
             if ('a' <= *(((char* (*)(char*, char k[20])) A) (sukaz_arg, s_arg)) && *(((char* (*)(char*, char k[20])) A) (sukaz_arg, s_arg)) <= 'z')
             {
-                if (i != 0)
-                {
-                    A = mass_fchar()[i - 1];
-                }
+                    A = mass_fchar()[k];
             }
         }
     }
@@ -236,8 +295,81 @@ Arr map( Arr Massiv, void* F(void*))
     return NewMassiv;
 }
 
+ctestMap()
+{
+    int k = 0;
+    char* sukaz_arg[9]; //аргумент для char
+    char s_arg[9][20]; //аргумент для char
+    char SET[] = "QWERTYUIOPASDFGHJKLZXCVBNMqwertyuiopasdfghjklzxcvbnm123456789";
+    int flag = 0;
+    void* (*ukazf1)(void* A);
+    ukazf1 = &F1;
+    Arr Massiv;
+    Arr NewMassiv;
+    Massiv.N = 5;
+    // проверка интовых функций
+    Massiv.A = (void**)malloc(Massiv.N * sizeof(void*)); // динамический массив указателей на функции 
+    for (int i = 0; i < Massiv.N; i++)
+        Massiv.A[i] = mass_fint()[i];
+    NewMassiv = map(Massiv, *ukazf1);
+    for (int i = 0; i < NewMassiv.N; i++)
+    {
+        if ((int*)NewMassiv.A[i] != ((int(*)(int))mass_fint()[i])(i) * (-1))
+            flag = 1;
+    }
+    free(Massiv.A);
+    // проверка указателей на строки
+    Massiv.dlinstr = 7;
+    Massiv.A = (void**)malloc(Massiv.N * sizeof(void*));
+    char* a = (char*)malloc(Massiv.N * Massiv.dlinstr * sizeof(char));
+    for (int i = 0; i < Massiv.N; i++)
+    {
+        for (int j = 0; j < Massiv.dlinstr; j++)
+        {
+            srand(j + i * 12 + (unsigned)time(NULL));
+            int set_len = strlen(SET);
+            *(a + i * Massiv.dlinstr + j) = SET[rand() % set_len];
+        }
+        Massiv.A[i] = a + i * Massiv.dlinstr;
+    }
+    char* b = (char*)malloc(Massiv.N * Massiv.dlinstr * sizeof(char));
+    for (int i = 0; i < Massiv.N; i++)
+    {
+        for (int j = 0; j < Massiv.dlinstr; j++)
+            *(b + i * Massiv.dlinstr + j) = *(a + i * Massiv.dlinstr + j);
+    }
+    NewMassiv = map(Massiv, *ukazf1);
+    for (int i = 0; i < Massiv.N; i++)
+    {
+        if (*(b + i * Massiv.dlinstr) <= 'z' && *(b + i * Massiv.dlinstr) >= 'a')
+        {
+            if (*(b + i * Massiv.dlinstr) + 'A' - 'a' != *((char*)NewMassiv.A[i]))
+                flag = 1;
+        }
+    }
+    //проверка символьных функций
+    free(Massiv.A);
+    Massiv.dlinstr = 10;
+    Massiv.A = (void**)malloc(Massiv.N * sizeof(void*));
+    for (int i = 0; i < Massiv.N; i++)
+        Massiv.A[i] = mass_fchar()[i];
+    NewMassiv = map(Massiv, *ukazf1);
+    for (int i = 0; i < Massiv.N; i++)
+    {
+        if ('a' <= *(((char* (*)(char*, char k[20])) Massiv.A[i]) (sukaz_arg, s_arg)) && *(((char* (*)(char*, char k[20]))Massiv.A[i]) (sukaz_arg, s_arg)) <= 'z')
+        {
+            if (mass_fchar()[k] != Massiv.A[i])
+                flag = 1;
+        }
+    }
+    if (flag == 1)
+        printf("MAP incorrect\n");
+    else printf("MAP correct\n");
+}
+
 int boolf(Arr Massiv, int i)
 {
+    int z = 0;
     char* sukaz_arg[9]; //аргумент для char
     char s_arg[9][20]; //аргумент для char
     for (int i = 0; i < 9; i++)
@@ -249,7 +381,7 @@ int boolf(Arr Massiv, int i)
     int flag = 0;
     if (Massiv.tip == 'i') //int func
     {
-        if (((int(*)(int))Massiv.A[i])(i) % 3 == 0)
+        if (((int(*)(int))Massiv.A[i])(z) % 3 == 0)
         {
             flag = 1; // :3
         }
@@ -257,13 +389,17 @@ int boolf(Arr Massiv, int i)
     if (Massiv.tip == 's') // stroka
     {
         if ('A' <= *((char*)Massiv.A[i]) && *((char*)Massiv.A[i]) <= 'Z')
+        {
             flag = 1;// строка начинается на заглавную
+        }
     }
 
     if (Massiv.tip == 'c') // char func
     {
         if ('A' <= *(((char* (*)(char*, char k[20])) Massiv.A[i]) (sukaz_arg[i], s_arg[i])) && *(((char* (*)(char*, char k[20])) Massiv.A[i]) (sukaz_arg[i], s_arg[i])) <= 'Z')
+        {
             flag = 1; // строка начинается на заглавную
+        }
     }
     if (flag == 1) return 1; else return 0;
 }
@@ -271,30 +407,131 @@ Arr where(Arr Massiv, int F(Arr Massiv, int i))
 //void** where(int* newN, void** newA, int N, void** A, char tip, int arg, char* s1[9], char s[9][20],int (*F)(int i, void** A, char tip, int arg, char* s1[9], char s[9][20]))
 {
     Arr NewMassiv;
-    NewMassiv = Massiv;
     int j = 0;
     int chet = 0;
-    int i = 0;
     int t;
-    for (i = 0; i < NewMassiv.N; i++)
+    for (int i = 0; i < Massiv.N; i++)
     {
-        t = (*F)(NewMassiv, i);
+        t = (*F)(Massiv, i);
         if (t == 1)
             chet++;
     }
-    void** newA = (void**)malloc(chet * sizeof(void*));
-    for (i = 0; i < NewMassiv.N; i++)
+    NewMassiv.A = (void**)malloc(chet * sizeof(void*));
+    for (int i = 0; i < Massiv.N; i++)
     {
-        t = (*F)(NewMassiv, i);
+        t = (*F)(Massiv, i);
         if (t == 1)
         {
-            newA[j] = NewMassiv.A[i];
+            NewMassiv.A[j] = Massiv.A[i];
             j++;
         }
     }
     NewMassiv.N = chet;
+    NewMassiv.dlinstr = Massiv.dlinstr;
+    NewMassiv.tip = Massiv.tip;
     return NewMassiv;
 }
+
+void ctestwhere()
+{
+    char* sukaz_arg[9];
+    char s_arg[9][20];
+    for (int i = 0; i < 9; i++)
+    {
+        for (int j = 0; j < 2; j++)
+            (s_arg)[i][j] = '0';
+        sukaz_arg[i] = &s_arg[i];
+    }
+    char SET[] = "QWERTYUIOPASDFGHJKLZXCVBNMabcdqwem123456789";
+    int flag = 0;
+    int arg = 0;
+    int k = 2;
+    int (*ukazf2)(Arr Massiv, int i);
+    ukazf2 = &boolf;
+    Arr Massiv;
+    Massiv.N = 9;
+    // интовые функции
+    Massiv.tip = 'i';
+    Massiv.A = (void**)malloc(Massiv.N * sizeof(void*));
+    for (int i = 0; i < Massiv.N; i++)
+        Massiv.A[i] = mass_fint()[i];
+    Arr NewMassiv = Massiv;
+    NewMassiv = where(Massiv, *ukazf2);
+    for (int i = 0; i < NewMassiv.N; i++)
+    {
+        if (((int(*)(int))NewMassiv.A[i])(arg) % 3 == 0)
+        {
+            if (mass_fint()[k] == NewMassiv.A[i])
+                k += 3;
+            else flag = 1;
+        }
+    }
+
+    //функции символьные
+    Massiv.tip = 'с';
+    Massiv.N = 9;
+    Massiv.A = (void**)malloc(Massiv.N * sizeof(void*)); // динамический массив указателей на функции 
+    for (int i = 0; i < Massiv.N; i++)
+    {
+        Massiv.A[i] = mass_fchar()[i];
+    }
+    k = 0;
+    NewMassiv = where(Massiv, *ukazf2);
+    for (int i = 0; i < NewMassiv.N; i++)
+    {
+        if ('A' <= *((char*)Massiv.A[i]) && *((char*)Massiv.A[i]) <= 'Z')
+            if ('A' <= *((char*)NewMassiv.A[k]) && *((char*)NewMassiv.A[k]) <= 'Z')
+            {
+                if (*((char*)Massiv.A[i]) != *((char*)NewMassiv.A[k]))
+                    flag = 1;
+                k++;
+            }
+    }
+    // строки
+    free(Massiv.A);
+    Massiv.A = (void**)malloc(Massiv.N * sizeof(void*));
+    Massiv.tip == 's';
+    Massiv.dlinstr = 5;
+    k = 0;
+    char* a = (char*)malloc(Massiv.N * Massiv.dlinstr * sizeof(char));
+    for (int i = 0; i < Massiv.N; i++)
+    {
+        for (int j = 0; j < Massiv.dlinstr; j++)
+        {
+            srand(j + i * 11 + (unsigned)time(NULL));
+            int set_len = strlen(SET);
+            *(a + i * Massiv.dlinstr + j) = SET[rand() % set_len];
+        }
+        Massiv.A[i] = a + i * Massiv.dlinstr;
+    }
+    NewMassiv.dlinstr = Massiv.dlinstr;
+    NewMassiv = where(Massiv, *ukazf2);
+    for (int i = 0; i < NewMassiv.N; i++)
+    {
+        printf("%c", *((char*)Massiv.A[i]));
+        if ('A' <= *((char*)Massiv.A[i]) && *((char*)Massiv.A[i]) <= 'Z')
+            {
+                if (*((char*)Massiv.A[i]) != *((char*)NewMassiv.A[k]))
+                    flag = 1;
+                k++;
+                printf("%c", *((char*)Massiv.A[i]));
+            }
+    }
+    if (flag == 1)
+        printf("WHERE incorrect\n");
+    else printf("WHERE correct\n");
+}
+
+
+void allctests()
+{
+    ctestconcat();
+    ctestaddelem();
+    ctestMap();
+    ctestwhere();
+
+}
+
 
 main()
 {
@@ -375,11 +612,11 @@ main()
                 if (fff == '2')
                 {
                     NewMassiv = where(Massiv, *ukazf2);
-                    printf("\nWHERE: массив из значений функций, кратных 3, при arg = i:\n");
+                    printf("\nWHERE: массив из значений функций, кратных 3, при arg = 0:\n");
                     for (int i = 0; i < NewMassiv.N; i++)
                     {
                         printf("\nf(%d) = ", i);
-                        printf("%d", ((int(*)(int))(NewMassiv.A)[i])(arg));
+                        printf("%d", ((int(*)(int))(NewMassiv.A)[i])(0));
                     }
                 }
                 if (fff == '3')
@@ -448,7 +685,7 @@ main()
                 if (fff == '1')
                 {
                     NewMassiv = map(Massiv, *ukazf1);
-                    printf("\nMAP: массив указателей на функцийЖ если функция начинающаяся на строчную букву, \nячейке массива присваевается адрес предыдущей по номеру функции: \n");
+                    printf("\nMAP: массив указателей на функций, если функция начинающаяся на строчную букву, \nячейке массива присваевается адрес f1: \n");
                     for (int i = 0; i < NewMassiv.N; i++)
                     {
                         printf("\nf(%d) = ", i);
@@ -513,7 +750,7 @@ main()
             printf("\nКолличество элементов в массиве: %d", Massiv.N);
             printf("\nДлина строк: %d", Massiv.dlinstr);
             Massiv.A = (void**)malloc(Massiv.N * sizeof(void*)); // динамический массив указателей на строки
-            char* a = (char*)malloc((unsigned long long)(Massiv.N) * (unsigned long long)Massiv.dlinstr * sizeof(char));
+            char* a = (char*)malloc(Massiv.N * Massiv.dlinstr * sizeof(char));
             for (int i = 0; i < Massiv.N; i++)
             {
                 for (int j = 0; j < Massiv.dlinstr; j++)
@@ -635,11 +872,11 @@ main()
                 if (fff == '2')
                 {
                     NewMassiv = where(Massiv, *ukazf2);
-                    printf("\nWHERE: массив из значений функций, кратных 3, при arg = i:\n");
+                    printf("\nWHERE: массив из значений функций, кратных 3, при arg = 0:\n");
                     for (int i = 0; i < NewMassiv.N; i++)
                     {
                         printf("\nf(%d) = ", i);
-                        printf("%d", ((int(*)(int))(NewMassiv.A)[i])(arg));
+                        printf("%d", ((int(*)(int))(NewMassiv.A)[i])(0));
                     }
                 }
                 if (fff == '3')
@@ -713,7 +950,7 @@ main()
                     if (fff == '1')
                     {
                         NewMassiv = map(Massiv, *ukazf1);
-                        printf("\nMAP: массив указателей на функцийЖ если функция начинающаяся на строчную букву, \nячейке массива присваевается адрес предыдущей по номеру функции: \n");
+                        printf("\nMAP: массив указателей на функцийЖ если функция начинающаяся на строчную букву, \nячейке массива присваевается адрес f1: \n");
                         for (int i = 0; i < NewMassiv.N; i++)
                         {
                             printf("\nf(%d) = ", i);
@@ -902,9 +1139,8 @@ main()
 
         if (deistvie_int == 7)
         {
+            allctests();
             if (flag == 1) ctest1(Massiv);
         }
     }
-    free(Massiv.A);
-    free(NewMassiv.A);
 }
